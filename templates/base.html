@@ -24,8 +24,6 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ STATIC_URL }}images/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="{{ STATIC_URL }}images/ico/apple-touch-icon-57-precomposed.png">
 </head><!--/head-->
-
-<body class="homepage">
 	
 	{% if user.is_authenticated %}
 	
@@ -105,12 +103,9 @@
     </header><!--/header-->
 	
 	{% endif %}
-	
-	<div class="container">
-	<body>
+	<body class="homepage">
 	{% block body_block %}{% endblock %}
 	</body>
-	</div>
 
     <footer id="footer" class="midnight-blue">
         <div class="container">
@@ -136,5 +131,4 @@
     <script src="{{ STATIC_URL }}js/jquery.isotope.min.js"></script>
     <script src="{{ STATIC_URL }}js/main.js"></script>
     <script src="{{ STATIC_URL }}js/wow.min.js"></script>
-</body>
 </html>
