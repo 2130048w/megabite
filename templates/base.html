@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-{ % load staticfiles % }
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -9,21 +8,21 @@
     <title>MegaBite</title>
 	
 	<!-- core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/font-awesome.min.css" rel="stylesheet">
-    <link href="css/animate.min.css" rel="stylesheet">
-    <link href="css/prettyPhoto.css" rel="stylesheet">
-    <link href="css/main.css" rel="stylesheet">
-    <link href="css/responsive.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/font-awesome.min.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/animate.min.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/prettyPhoto.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/main.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/responsive.css" rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="js/html5shiv.js"></script>
     <script src="js/respond.min.js"></script>
     <![endif]-->       
-    <link rel="shortcut icon" href="static/images/ico/favicon.ico">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="static/images/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="static/images/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="static/images/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="static/images/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="{{ STATIC_URL }}images/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ STATIC_URL }}images/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ STATIC_URL }}images/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ STATIC_URL }}images/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="{{ STATIC_URL }}images/ico/apple-touch-icon-57-precomposed.png">
 </head><!--/head-->
 
 <body class="homepage">
@@ -41,7 +40,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="index.html"><img src="{ % static "images/logo2.png" %}" width="200" height="52" alt="logo"></a>
+                    <a class="navbar-brand" href="index.html"><img src="{{ STATIC_URL }}images/logo2.png" width="200" height="52" alt="logo"></a>
                 </div>
 				
                 <div class="collapse navbar-collapse navbar-right">
@@ -72,7 +71,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="index.html"><img src="{% static "images/logo2.png" %}" width="200" height="52" alt="logo"></a>
+                    <a class="navbar-brand" href="index.html"><img src="{{ STATIC_URL }}images/logo2.png" width="200" height="52" alt="logo"></a>
                 </div>
 				
                 <div class="collapse navbar-collapse navbar-right">
@@ -105,10 +104,12 @@
 		
     </header><!--/header-->
 	
-	{ % endif %}
+	{% endif %}
 	
 	<div class="container">
+	<body>
 	{% block body_block %}{% endblock %}
+	</body>
 	</div>
 
     <footer id="footer" class="midnight-blue">
@@ -129,11 +130,11 @@
         </div>
     </footer><!--/#footer-->
 
-    <script src="js/jquery.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.prettyPhoto.js"></script>
-    <script src="js/jquery.isotope.min.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/wow.min.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.prettyPhoto.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.isotope.min.js"></script>
+    <script src="{{ STATIC_URL }}js/main.js"></script>
+    <script src="{{ STATIC_URL }}js/wow.min.js"></script>
 </body>
 </html>
