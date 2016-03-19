@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{ % load staticfiles % }
+
+{% block title %}Login{% endblock %}
+
+{% block body_block %}
+<p></br></p>
+    <section id="contact-page">
+        <div class="container">
+			<div class="center">
+				<div class="center wow fadeInDown"> 
+					<h2>Login</h2>
+					<p class="lead">Login to access the zombie world</p>
+				</div>
+				<div class="row contact-wrap"> 
+					<form method="post" action=".">
+					{% csrf_token %}
+					{{ form.as_p }}
+
+					<input type="submit" value="Log in" />
+					<input type="hidden" name="next" value="{{ next }}" />
+					</form>
+				</div>
+            </div><!--/.row-->
+        </div><!--/.container-->
+    </section><!--/#contact-page-->
+{% endblock %}

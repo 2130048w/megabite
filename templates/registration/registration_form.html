@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{ % load staticfiles % }
+
+{% block title %}Register{% endblock %}
+
+{% block body_block %}
+	<p></br></p>
+    <section id="contact-page">
+        <div class="container">
+			<div class="center">
+				<div class="center wow fadeInDown">  
+	                <h2>Register To Play</h2>
+	                <p class="lead">Register to gain access to the zombie world.</p>
+	            </div> 
+	            <div class="row contact-wrap"> 
+	                <!--div class="status alert alert-success" style="display: none"></div-->
+	                <!--form id="main-contact-form" class="contact-form" name="contact-form"-->
+					<form method="post" action=".">
+						{% csrf_token %}
+						{{form.as_p}}
+						 <input type="submit" value="Submit" />
+	                </form>
+				</div>
+            </div><!--/.row-->
+        </div><!--/.container-->
+    </section><!--/#contact-page-->
+{% endblock %}
