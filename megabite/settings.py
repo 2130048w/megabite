@@ -48,7 +48,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'game', 'registration',
+    'game',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -94,8 +94,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
-
-REGISTRATION_OPEN =	True
-REGISTRATION_AUTO_LOGIN = True
-LOGIN_REDIRECT_URL = '/game/'
-LOGIN_URL = '/accounts/login/'
