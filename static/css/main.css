@@ -1,5 +1,5 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,600,700,300,800);
-
+@import url(http://fonts.googleapis.com/css?family=Raleway);
 
 /*************************
 *******Typography******
@@ -7,7 +7,7 @@
 
 body {
   background: #191919;;
-  font-family: 'Brandon Grotesque', sans-serif;
+  font-family: 'Raleway', sans-serif;
   color:#4e4e4e;
   line-height: 22px;
 }
@@ -19,7 +19,7 @@ h4,
 h5,
 h6 {
   font-weight: 600; 
-  font-family: 'Brandon Grotesque', sans-serif;
+  font-family: 'Raleway', sans-serif;
   color:white;
 }
 
@@ -2524,6 +2524,27 @@ shortcodes page css
   display: inline-block;
   margin-left: 15px;
 }
+
+/***********************
+********* Leaderboards page css ******
+************************/
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+	margin: 12px;
+}
+
+th, td{
+	padding: 15px;
+}
+
+table{
+	float:left;
+	width:45%;
+	align-items: center;
+}
+
 
 
 

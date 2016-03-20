@@ -23,3 +23,7 @@ def register(request):
     # Note that the first parameter is the template we wish to use.
 
     return render(request, 'register.html', context_dict)
+	
+def leaderboards(request):
+	context_dict={'boldmessage': "I am bold font from the context"}
+	return render(request, 'leaderboards.html', context_dict)
