@@ -15,23 +15,29 @@
 	            </div> 
 				<div class="row contact-wrap"> 
 					<div class="tables">
-						<table class="killers">
+						<table class="leaderboards">
 							<caption>Top Killers</caption>
 							<tr>
 								<th>Username</th>
 								<th>Kills</th>
+							{% for i in kranks %}	
 							<tr>
-								<td></td>
+								<td>{{i}}</td>
+								<td>{{i.most_kills}}</td>								
 							</tr>
+							{% endfor %}
 						</table>
-						<table class="survirvors">
+						<table class="leaderboards">
 							<caption>Top Survivors</caption>
 							<tr>
 								<th>Username</th>
 								<th>Days Survived</th>
+							{% for i in sranks %}	
 							<tr>
-								<td></td>
+								<td>{{i}}</td>
+								<td>{{i.most_days_survived}}</td>
 							</tr>
+							{% endfor %}
 						</table>		
 					</div>
 				</div>

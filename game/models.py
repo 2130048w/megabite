@@ -10,6 +10,7 @@ class Player(models.Model):
     most_kills = models.IntegerField(default=0, blank=False)
     most_people = models.IntegerField(default=1, blank=False)
     current_game = models.SlugField(default="", blank=True)
+
     
     def __unicode__(self):
         return self.user.username

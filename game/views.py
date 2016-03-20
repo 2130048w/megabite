@@ -1,29 +1,14 @@
 from django.shortcuts import render
+from game.models import Player
 
 def index(request):
-
-    # Construct a dictionary to pass to the template engine as its context.
-    # Note the key boldmessage is the same as {{ boldmessage }} in the template!
-    context_dict = {'boldmessage': "I am bold font from the context"}
-
-    # Return a rendered response to send to the client.
-    # We make use of the shortcut function to make our lives easier.
-    # Note that the first parameter is the template we wish to use.
-
-    return render(request, 'index.html', context_dict)
+    return render(request, 'index.html', {})
     
 def register(request):
-
-    # Construct a dictionary to pass to the template engine as its context.
-    # Note the key boldmessage is the same as {{ boldmessage }} in the template!
-    context_dict = {'boldmessage': "I am bold font from the context"}
-
-    # Return a rendered response to send to the client.
-    # We make use of the shortcut function to make our lives easier.
-    # Note that the first parameter is the template we wish to use.
-
-    return render(request, 'register.html', context_dict)
+    return render(request, 'register.html', {})
 	
 def leaderboards(request):
-	context_dict={'boldmessage': "I am bold font from the context"}
-	return render(request, 'leaderboards.html', context_dict)
+    kill_rankings = Player.objects.order_by('-most_kills')[:20]
+    survival_rankings = Player.objects.order_by('-most_days_survived')[:20]
+    contextDict = {'kranks' : kill_rankings, 'sranks': survival_rankings}
+    return render(request, 'leaderboards.html', contextDict)
