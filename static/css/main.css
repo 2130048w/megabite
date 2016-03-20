@@ -2537,4 +2537,81 @@ shortcodes page css
 	align-items: center;
 }
 
+/************************
+*********intro page css ********
+*************************/
+
+img.ri
+{
+	position: absolute;
+	max-width: 80%;
+	top: 10%;
+	left: 10%;
+	border-radius: 3px;
+}
+
+img.ri:empty
+{
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	-moz-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	-o-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+}
+
+@media screen and (orientation: portrait) {
+  img.ri { max-width: 90%; }
+}
+
+@media screen and (orientation: landscape) {
+  img.ri { max-height: 90%; }
+}
+
+img.riz
+{
+	position: absolute;
+	max-width: 100%;
+	top: 10%;
+	left: 5%;
+	border-radius: 3px;
+	animation-name: walk;
+	animation-duration: 20s;
+	animation-iteration-count: infinite;
+	animation-timing-function: ease-in-out;
+}
+
+img.riz:empty
+{
+	top: 60%;
+	left: -40%;
+	-webkit-transform: translate(-50%, -50%);
+	-moz-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	-o-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+}
+
+@media screen and (orientation: portrait) {
+  img.riz { max-width: 80%; }
+}
+
+@media screen and (orientation: landscape) {
+  img.riz { max-height: 90%; }
+}
+
+@keyframes walk {
+    0%   {left:-40%;}
+    10%  {left:-22%;}
+	20%  {left:-4%;}
+	30%  {left:14%;}
+	40%  {left:32%;}
+	50%  {left:50%;}
+    60%  {left:68%;}
+	70%  {left:86%;}
+	80%  {left:104%;}
+	90%  {left:122%;}
+    100% {left:140%;}
+}
 
