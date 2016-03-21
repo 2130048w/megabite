@@ -5,7 +5,18 @@
 {% block title %}Game{% endblock %}
 
 {% block body_block %}
-	<h2>{{ currentHouse }}</h2>
+	<h2>Time until nightfall: {{ tleft }}</h2>
+	{% if rooms %}
+	<h2>Inside: {{ currentHouse }}</h2></br>
+	<h2>In room: {{ currentRoom }}</h2></br>
+	{% endif %}
+	{% if street %}
+	<h2>{{ currentStreet }}</h2></br>
+	<h2>Outside: {{ currentHouse }}</h2></br>
+	{% endif %}
+	{% if zombies %}
+	 <h2>You're being attacked by {{ zombies }} zombies!</h2></br>
+	{% endif %}
 	<ul>
 		<form action="" method="post">
 		{% csrf_token %}
@@ -13,7 +24,7 @@
 		<h2> Options </h2>
          <ul class="nav navbar-nav">
 		{% for i in options %}
-			<li><input type="submit" name={{ i }} value={{ i }} /></li>
+			<li><a href="#"><input type="submit" class="btn-dark" name={{ i }} value={{ i }} /></a></li>
 		{% endfor %}
 		</ul>
 		</div>
@@ -22,7 +33,7 @@
 		<h2> Houses </h2>
          <ul class="nav navbar-nav">
 		{% for i in street %}
-			<li><input type="submit" name={{ i }} value={{ i }} /></li>
+			<li><a href="#"><input type="submit" name={{ i }} value={{ i }} /></a></li>
 		{% endfor %}
 		</ul>
 		</div>
@@ -32,16 +43,17 @@
 		<h2> Rooms </h2>
          <ul class="nav navbar-nav">
 		{% for i in rooms %}
-			<li><input type="submit" name={{ i }} value={{ i }} /></li>
+			<li><a href="#"><input type="submit" name={{ i }} value={{ i }} /></a></li>
 		{% endfor %}
 		</ul>
 		</div>
 		{% endif %}
 		</form>
 	</ul>
+	<div class=center>
 	<ul>
 		<li>{{ state }}</li>
-		<li>{{ status }}</li>
-	</ul>
+		<li>{% autoescape off %} {{ status }} {% endautoescape %}</li>
+	</ul></div>
 {% endblock %}
 		

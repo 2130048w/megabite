@@ -176,6 +176,7 @@ def game(request):
             g.player_state = myg['state']
             g.update_state = myg['upstate']
             g.game_state = myg['gstate']
+            g.update_time_left(zgame.LENGTH_OF_DAY - myg['tleft'])
             g.street = myg['street']
         else:
             g.start_new_day()
@@ -184,6 +185,7 @@ def game(request):
                 if g.game_state == 'STREET':
                     contextDict['street'] = range(len(g.street.house_list)) #Once again more useful
                     contextDict['currentHouse'] = g.street.get_current_house()
+                    contextDict['currentStreet'] = g.street
                 if g.game_state == 'HOUSE':
                     contextDict['currentHouse'] = g.street.get_current_house()
                     contextDict['rooms'] = range(len(g.street.get_current_house().room_list)) #Length is more useful for us than the actual list
@@ -208,20 +210,21 @@ def game(request):
                     if g.game_state == 'STREET':
                         for i in range(len(g.street.house_list)):
                             if str(i) in request.POST:
+                                cstatus += "Outside house "+str(i)
                                 g.take_turn('MOVE', i)
-                                cstatus += 'Entered house '+str(i)
                                 break
                     if g.game_state == 'HOUSE':
                         for i in range(len(g.street.get_current_house().room_list)):
                             if str(i) in request.POST:
+                                cstatus += "Searched room "+str(i)
                                 g.take_turn('SEARCH', i)
-                                cstatus += 'Searched room '+str(i)
                                 break
             else:
                 # end the day
                 g.end_day()
                 g.start_new_day()
         else:
+            u.games_played += 1
             g = zgame.Game() #Make a new game for that user
             g.start_new_day()
 
@@ -255,6 +258,7 @@ def game(request):
         contextDict['options'] = g.turn_options   
 	contextDict['state'] = g.player_state
 	contextDict['gstate'] = g.game_state
+	contextDict['tleft'] = g.time_left
 
 	myg = {}
 	
@@ -262,6 +266,14 @@ def game(request):
         myg['state'] = g.player_state
         myg['upstate'] = g.update_state
         myg['gstate'] = g.game_state
+        myg['tleft'] = g.time_left
         u.current_game = pickle.dumps(myg)
+        if g.player_state.kills > u.most_kills:
+            u.most_kills = g.player_state.kills
+        if g.player_state.days > u.most_days_survived:
+            u.most_days_survived = g.player_state.days
+        if g.player_state.party > u.most_people:
+            u.most_people = g.player_state.party
+        
         u.save()
 	return render(request, 'game.html', contextDict)
