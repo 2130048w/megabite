@@ -7,7 +7,8 @@ urlpatterns = patterns('',
         url(r'^login/$', views.myLogin, name='myLogin'),
 	url(r'^leaderboards/$', views.leaderboards, name='leaderboards'),
         url(r'^intro/$', views.intro, name='intro'),
-        url(r'^play/$', views.game, name='game'))
+        url(r'^play/$', views.game, name='game'),
+        url(r'^safehouse/$', views.safehouse, name='safehouse'))
 
 
 

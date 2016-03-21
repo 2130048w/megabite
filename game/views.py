@@ -4,6 +4,8 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core import exceptions
+from django.http import HttpResponseRedirect, HttpResponse
 
 @ensure_csrf_cookie
 def index(request):
@@ -151,3 +153,15 @@ def game(request):
         g.end_day()
         #u.game = pickle(g)
 	return render(request, 'game.html', contextDict)
+
+def safehouse(request):
+    try:
+        u = request.user.player
+    except exceptions.ObjectDoesNotExist:
+        return HttpResponseRedirect('/accounts/register/')
+    
+    kill_stat = u.most_kills
+    days_stat = u.most_days_survived
+    games_stat = u.games_played
+    contextDict = {'kstat' : kill_stat, 'dstat' : days_stat, 'gstat' : games_stat}
+    return render(request, 'safehouse.html', contextDict)
