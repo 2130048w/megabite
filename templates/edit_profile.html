@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{ % load staticfiles % }
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block body_block %}
+
+	<p></br></p>
+    <section id="contact-page">
+        <div class="container">
+			<div class="center">
+				<div class="center wow fadeInDown">  
+	                <h2>Edit Profile</h2>
+	            </div> 
+			</div>
+			<div id="form">
+				<form id="update_user_form" method="POST" action="/userprofile/update_user/" enctype="multipart/form-data">
+					{% csrf_token %}
+					{{ update_user_form.as_p }}
+					{{ update_profile_form.as_p }}
+					<img src="{{ update_profile_form.instance.picture.url }}" />
+					<br />
+					<input type="SUBMIT" name="submit" value="Update"/>
+				</form>
+			</div>
+		</div>
+	</section>
+
+{% endblock %}

@@ -5,18 +5,43 @@
 {% block title %}Game{% endblock %}
 
 {% block body_block %}
-
-	<h1>{{gstate}}</h1>
+	<h2>{{ currentHouse }}</h2>
 	<ul>
 		<form action="" method="post">
 		{% csrf_token %}
+		<div class="collapse navbar-collapse navbar-right">
+		<h2> Options </h2>
+         <ul class="nav navbar-nav">
 		{% for i in options %}
-			<input type="submit" name={{i}} value={{i}} />
+			<li><input type="submit" name={{ i }} value={{ i }} /></li>
 		{% endfor %}
+		</ul>
+		</div>
+		{% if street %}
+		<div class="collapse navbar-collapse navbar-right">
+		<h2> Houses </h2>
+         <ul class="nav navbar-nav">
+		{% for i in street %}
+			<li><input type="submit" name={{ i }} value={{ i }} /></li>
+		{% endfor %}
+		</ul>
+		</div>
+		{% endif %}
+		{% if rooms %}
+		<div class="collapse navbar-collapse navbar-right">
+		<h2> Rooms </h2>
+         <ul class="nav navbar-nav">
+		{% for i in rooms %}
+			<li><input type="submit" name={{ i }} value={{ i }} /></li>
+		{% endfor %}
+		</ul>
+		</div>
+		{% endif %}
 		</form>
 	</ul>
 	<ul>
-		<li>{{state}}</li>
+		<li>{{ state }}</li>
+		<li>{{ status }}</li>
 	</ul>
 {% endblock %}
 		

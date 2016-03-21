@@ -6,13 +6,13 @@
 
 {% block body_block %}
 
-{% if user.is_authenticated %}
 	<p></br></p>
     <section id="contact-page">
         <div class="container">
 			<div class="center">
 				<div class="center wow fadeInDown">  
 	                <h2>SafeHouse</h2>
+					<h3>Welcome, {{username}}</h3>
 	            </div> 
 				<div class="row contact-wrap"> 
 					<div class="tables">
@@ -38,15 +38,11 @@
 						{% else %}
 							<img src = "user.profile_picture"/>
 						{% endif %}
-						<button><a href="#">Edit Profile</a></button>
+						<a href="/game/edit_profile/">Edit Profile</a>
 					</div>	
 				</div>
 			</div>
 		</div>
 	</section>
-
-{% else %}
-		<a href="accounts/register">Login</a>
-{% endif &}
 
 {% endblock %}
