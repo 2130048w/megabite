@@ -202,7 +202,7 @@ h1 {
 }
 
 .divide:before {
-	background: linear-gradient(90deg, #606060 12%,#606060 12%,#45484d 26%,#2b2d30 57%,#000000 83%);
+	background: red;
 }
 
 .divide {
@@ -215,28 +215,16 @@ h1 {
 .logo {
 	position: relative;
 	margin: auto;
-	border: solid 5px white;
-	width: 80px;
-	height: 80px;
-	border-radius: 50%;
-	background: linear-gradient(36deg, #606060 42.34%, transparent 42.34%) 0 0, linear-gradient(72deg, #1d1d1d 75.48%, transparent 75.48%) 0 0, linear-gradient(-36deg, #1a1a1a 42.34%, transparent 42.34%) 100% 0, linear-gradient(-72deg, #2b2bd30 75.48%, transparent 75.48%) 100% 0, linear-gradient(36deg, transparent 57.66%, #070707 57.66%) 100% 100%, linear-gradient(72deg, transparent 24.52%, #0d0d0d 24.52%) 100% 100%, linear-gradient(-36deg, transparent 57.66%, #1d1d1d 57.66%) 0 100%, linear-gradient(-72deg, transparent 24.52%, #62a43e 24.52%) 0 100%, #43a1cd linear-gradient(#313131, #121212) 50% 100%;
+	width: 270px;
+	height: 70px;
+	background-image: url(/static/images/logo2.png);
 	background-repeat: no-repeat;
-	background-size: 50% 50%;
+	background-size: 100% 100%;
 	transition: 1s;
 	cursor: pointer;
 }
 
-.logo:after {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin: -10px;
-	width: 20px;
-	height: 20px;
-	border-radius: 50%;
-	background: white;
-	content: '';
-}
+
 
 .logo:hover {
 	transform: rotate(360deg);
