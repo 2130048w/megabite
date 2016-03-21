@@ -2,46 +2,51 @@
 
 { % load staticfiles % }
 
-{% block title %}LeaderBoards{% endblock %}
+{% block title %}SafeHouse{% endblock %}
 
 {% block body_block %}
 
+{% if user.is_authenticated %}
 	<p></br></p>
     <section id="contact-page">
         <div class="container">
 			<div class="center">
 				<div class="center wow fadeInDown">  
-	                <h2>LeaderBoards</h2>
+	                <h2>SafeHouse</h2>
 	            </div> 
 				<div class="row contact-wrap"> 
 					<div class="tables">
 						<table class="leaderboards">
-							<caption>Top Killers</caption>
+							<caption>User Stats</caption>
 							<tr>
-								<th>Username</th>
-								<th>Kills</th>
-							{% for i in kranks %}	
-							<tr>
-								<td>{{i}}</td>
-								<td>{{i.most_kills}}</td>								
+								<th> Most Kills</th>
+								<td>{{kstat}}</td>
 							</tr>
-							{% endfor %}
-						</table>
-						<table class="leaderboards">
-							<caption>Top Survivors</caption>
 							<tr>
-								<th>Username</th>
-								<th>Days Survived</th>
-							{% for i in sranks %}	
-							<tr>
-								<td>{{i}}</td>
-								<td>{{i.most_days_survived}}</td>
+								<th> Most Days</th>
+								<td>{{dstat}}</td>
 							</tr>
-							{% endfor %}
+							<tr>
+								<th>Games Played</th>
+								<td>{{gstat}}</td>
+							</tr>
 						</table>		
 					</div>
+					<div class="profile_picture">
+						{% if user.profile_picture == None %}
+							<img class="profile_picture" src ="{{STATIC_URL}}images/default.jpg"/>
+						{% else %}
+							<img src = "user.profile_picture"/>
+						{% endif %}
+						<button><a href="#">Edit Profile</a></button>
+					</div>	
 				</div>
 			</div>
 		</div>
 	</section>
-{% endblock %}	
+
+{% else %}
+		<a href="accounts/register">Login</a>
+{% endif &}
+
+{% endblock %}

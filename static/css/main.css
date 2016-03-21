@@ -27,6 +27,10 @@ h1{
   color:white;
 }
 
+.indexHead{
+	font-size: 400px;
+}
+
 h2{
   font-size: 20px;
 }
@@ -100,7 +104,7 @@ a:focus {
 }
 
 .center h2{
-  font-size: 36px;
+  font-size: 70px;
   margin-top: 0;
   margin-bottom: 20px;
 }
@@ -2542,6 +2546,24 @@ shortcodes page css
 	font-family: Raleway;
 	text-align: left;
 }
+
+/***********************
+********* SafeHouse page css ******
+************************/
+.profile_picture{
+	display: inline-block;
+	vertical-align: center;
+	max-width: 200px;
+	max-height: 200px;
+	height:auto;
+	width:auto;
+	border-radius: 25px;
+}
+
+.edit{
+	
+}
+
 /************************
 *********intro page css ********
 *************************/

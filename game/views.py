@@ -157,7 +157,7 @@ def game(request):
 
 def safehouse(request):
     try:
-        u = request.user.player
+        u = request.user
     except exceptions.ObjectDoesNotExist:
         return HttpResponseRedirect('/accounts/register/')
     
