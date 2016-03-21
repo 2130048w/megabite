@@ -129,36 +129,22 @@ def safehouse(request):
     contextDict = {'kstat' : kill_stat, 'dstat' : days_stat, 'gstat' : games_stat, 'username': name}
     return render(request, 'safehouse.html', contextDict)
 
-@login_required	
 def edit_profile(request):
-    try:
-        user_profile = Player.objects.get(user=request.user)
-    except UserProfile.DoesNotExist:
-        return HttpResponse("invalid user_profile!")
-
-    if request.method == "POST":
-        update_user_form = forms.UserForm(data=request.POST, instance=request.user)
-        update_profile_form = forms.PlayerForm(data=request.POST, instance=user_profile)
-        if update_user_form.is_valid() and update_profile_form.is_valid():
-            user = update_user_form.save()
-            profile = update_profile_form.save(commit=True)
-            profile.user = user
-
-            if 'picture' in request.FILES:
-                profile.picture = request.FILES['picture']
-
-            profile.save()
-
-        else:
-            print(update_user_form.errors, update_profile_form.errors)
-    else:
-        update_user_form = forms.UserForm(instance=request.user)
-        update_profile_form = forms.PlayerForm(instance=user_profile)
-
-    return render(request,
-            'edit_profile.html',
-            {'update_user_form': update_user_form, 'update_profile_form': update_profile_form}
-            )	
+    u = request.user.player
+    if request.method == 'POST':
+		un = request.POST.get('username', False)
+		if un != False:
+			u.user.username = un
+			print('POST')
+		up = request.POST.get('password', False)
+		if up != False:
+			u.password = up
+			print('Got to password')
+		pp = request.POST.get('profile_picture', False)
+		if pp != False:
+			u.profile_picture = pp
+    u.save()	
+    return render( request, 'edit_profile.html', '' )	
     
 def intro(request):
 	return render(request, 'intro.html')
