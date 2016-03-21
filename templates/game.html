@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{ % load staticfiles % }
+
+{% block title %}Game{% endblock %}
+
+{% block body_block %}
+
+	<h1>{{gstate}}</h1>
+	<ul>
+		<form action="" method="post">
+		{% csrf_token %}
+		{% for i in options %}
+			<input type="submit" name={{i}} value={{i}} />
+		{% endfor %}
+		</form>
+	</ul>
+	<ul>
+		<li>{{state}}</li>
+	</ul>
+{% endblock %}
+		
