@@ -4,9 +4,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.core import exceptions
-from django.http import HttpResponseRedirect, HttpResponse
-from game.models import Player
+import pickle
 
 @ensure_csrf_cookie
 def index(request):
@@ -123,46 +121,102 @@ def intro(request):
 def game(request):
 	contextDict = {}
 	try:
-		u = request.user
+		u = request.user.player
 	except exceptions.ObjectDoesNotExist:
 		return HttpResponseRedirect('/accounts/register')
-	g = zgame.Game()
-	g.start_new_day()
-	if not g.is_game_over():
-        #kick off the day
-		g.start_new_day()
-        if not g.is_day_over() and not g.is_game_over():
-			contextDict['options'] = g.turn_options
-			contextDict['state'] = str(zgame.PlayerState())
-			contextDict['gstate'] = g.game_state
-			if request.method == 'POST':
-				if 'MOVE' in request.POST:
-					g.take_turn('MOVE')
-				if 'ENTER' in request.POST:
-					g.take_turn('ENTER')
-				if 'WAIT' in request.POST:
-					g.take_turn('WAIT')	
-				if 'FIGHT' in request.POST:
-					g.take_turn('FIGHT')
-				if 'RUN' in request.POST:
-					g.take_turn('RUN')
-				if 'EXIT' in request.POST:
-					g.take_turn('EXIT')	
-				if 'SEARCH' in request.POST:
-					g.take_turn('SEARCH')	
-        # end the day
-        g.end_day()
-        #u.game = pickle(g)
-	return render(request, 'game.html', contextDict)
+	g = zgame.Game() #Make a new game
+	cstatus = ''
+	if u.current_game != "":
+            myg = pickle.loads(u.current_game) #Otherwise load their game
+            g.player_state = myg['state']
+            g.update_state = myg['upstate']
+            g.game_state = myg['gstate']
+            g.street = myg['street']
+        else:
+            g.start_new_day()
+        if not g.is_game_over():
+            if not g.is_day_over():
+                if g.game_state == 'STREET':
+                    contextDict['street'] = range(len(g.street.house_list)) #Once again more useful
+                    contextDict['currentHouse'] = g.street.get_current_house()
+                if g.game_state == 'HOUSE':
+                    contextDict['currentHouse'] = g.street.get_current_house()
+                    contextDict['rooms'] = range(len(g.street.get_current_house().room_list)) #Length is more useful for us than the actual list
+                    contextDict['currentRoom'] = g.street.get_current_house().get_current_room()
+                if g.game_state == 'ZOMBIE':
+                    contextDict['zombies'] = g.street.get_current_house().get_current_room().zombies
+		if request.method == 'POST':
+                    if 'MOVE' in request.POST:
+                        g.take_turn('MOVE')
+                    if 'ENTER' in request.POST:
+                        g.take_turn('ENTER')
+                    if 'WAIT' in request.POST:
+                        g.take_turn('WAIT')	
+                    if 'FIGHT' in request.POST:
+                        g.take_turn('FIGHT')
+                    if 'RUN' in request.POST:
+                        g.take_turn('RUN')
+                    if 'EXIT' in request.POST:
+                        g.take_turn('EXIT')	
+                    if 'SEARCH' in request.POST:
+                        g.take_turn('SEARCH', g.street.get_current_house().get_current_room())
+                    if g.game_state == 'STREET':
+                        for i in range(len(g.street.house_list)):
+                            if str(i) in request.POST:
+                                g.take_turn('MOVE', i)
+                                cstatus += 'Entered house '+str(i)
+                                break
+                    if g.game_state == 'HOUSE':
+                        for i in range(len(g.street.get_current_house().room_list)):
+                            if str(i) in request.POST:
+                                g.take_turn('SEARCH', i)
+                                cstatus += 'Searched room '+str(i)
+                                break
+            else:
+                # end the day
+                g.end_day()
+                g.start_new_day()
+        else:
+            g = zgame.Game() #Make a new game for that user
+            g.start_new_day()
 
-def safehouse(request):
-    try:
-        u = request.user.player
-    except exceptions.ObjectDoesNotExist:
-        return HttpResponseRedirect('/accounts/register/')
-    
-    kill_stat = u.most_kills
-    days_stat = u.most_days_survived
-    games_stat = u.games_played
-    contextDict = {'kstat' : kill_stat, 'dstat' : days_stat, 'gstat' : games_stat}
-    return render(request, 'safehouse.html', contextDict)
+        cstatus = ''
+        
+        if g.update_state.party<0:
+            cstatus += "You lost: {0} people </br>".format(abs(g.update_state.party))
+
+        if g.update_state.party>0:
+            cstatus += "{0} more people have joined your party </br>".format(g.update_state.party)
+
+        if g.update_state.ammo > 0:
+            cstatus += "You found: {0} units of ammo</br>".format(g.update_state.ammo)
+
+        if g.update_state.ammo < 0:
+            cstatus += "You used: {0} units of ammo</br>".format(abs(g.update_state.ammo))
+
+        if g.update_state.food > 0:
+            cstatus += "You found: {0} units of food</br>".format(g.update_state.food)
+
+        if g.update_state.food < 0:
+            cstatus += "You used: {0} units of food</br>".format(abs(g.update_state.food))
+
+        if g.update_state.kills > 0:
+            cstatus += "You killed: {0} zombies</br>".format(g.update_state.kills)
+
+        if g.update_state.days > 0:
+            cstatus += "New Day: You survived another day!"
+
+        contextDict['status'] = cstatus           
+        contextDict['options'] = g.turn_options   
+	contextDict['state'] = g.player_state
+	contextDict['gstate'] = g.game_state
+
+	myg = {}
+	
+        myg['street'] = g.street
+        myg['state'] = g.player_state
+        myg['upstate'] = g.update_state
+        myg['gstate'] = g.game_state
+        u.current_game = pickle.dumps(myg)
+        u.save()
+	return render(request, 'game.html', contextDict)
