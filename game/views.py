@@ -135,11 +135,9 @@ def edit_profile(request):
 		un = request.POST.get('username', False)
 		if un != False:
 			u.user.username = un
-			print('POST')
 		up = request.POST.get('password', False)
 		if up != False:
 			u.password = up
-			print('Got to password')
 		pp = request.POST.get('profile_picture', False)
 		if pp != False:
 			u.profile_picture = pp
