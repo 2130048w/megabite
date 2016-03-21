@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core import exceptions
 from django.http import HttpResponseRedirect, HttpResponse
+from game.models import Player
 
 @ensure_csrf_cookie
 def index(request):
