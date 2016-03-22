@@ -159,6 +159,43 @@ h1 {
 	font-weight: 600;
 }
 
+/*****************************************
+  upload button styles
+******************************************/
+.file-upload {
+	position: relative;
+	display: inline-block;
+}
+
+.file-upload__label {
+  display: block;
+  float: left;
+  padding: 12px;
+  color: #fff;
+  background: #0d0d0d;
+  border-radius: .4em;
+  transition: background .3s;
+  -webkit-font-smoothing: antialiased;
+}
+
+.file-upload__label:hover {
+     cursor: pointer;
+     background: #070707;;
+  }
+    
+.file-upload__input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    font-size: 1;
+    width:0;
+    height: 100%;
+    opacity: 0;
+}
+
+
 .modal_inpt {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;

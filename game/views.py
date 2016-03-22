@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from game import forms, models, zgame
 from game.models import Player
+from game.forms import UserForm, PlayerForm
 from django.views.decorators.csrf import ensure_csrf_cookie
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect, HttpResponse
 import pickle
 
 @ensure_csrf_cookie
@@ -42,8 +44,8 @@ def register(request):
 
             # Did the user provide a profile picture?
             # If so, we need to get it from the input form and put it in the UserProfile model.
-            if 'picture' in request.FILES:
-                profile.picture = request.FILES['picture']
+            if 'profile_picture' in request.FILES:
+                profile.picture = request.FILES['profile_picture']
 
             # Now we save the UserProfile model instance.
             
@@ -130,19 +132,34 @@ def safehouse(request):
     return render(request, 'safehouse.html', contextDict)
 
 def edit_profile(request):
-    u = request.user.player
+def edit_profile(request):
+    u = request.user
+    edited = False
     if request.method == 'POST':
-		un = request.POST.get('username', False)
-		if un != False:
-			u.user.username = un
-		up = request.POST.get('password', False)
-		if up != False:
-			u.password = up
-		pp = request.POST.get('profile_picture', False)
-		if pp != False:
-			u.profile_picture = pp
-    u.save()	
-    return render( request, 'edit_profile.html', '' )	
+		user_form = UserForm(data=request.POST, instance=u)
+		profile_form = PlayerForm(data=request.POST, instance=u)
+		
+		if user_form.is_valid() and profile_form.is_valid():
+			u = user_form.save()
+			u.set_password(u.password)
+			update_session_auth_hash(request, u)
+			u.save()
+			
+			profile = profile_form.save(commit=False)
+			profile.user = u
+			
+			if 'profile_picture' in request.FILES:
+				profile.picture = request.FILES['profile_picture']
+			
+			profile.save()
+			edited = True
+		
+    else:
+		user_form = UserForm()
+		profile_form = PlayerForm()
+    return render( request, 'edit_profile.html', 
+		{'user_form':user_form, 'profile_form': profile_form, 'edited':edited} )	
+    
     
 def intro(request):
 	return render(request, 'intro.html')
@@ -254,10 +271,22 @@ def game(request):
         u.current_game = pickle.dumps(myg)
         if g.player_state.kills > u.most_kills:
             u.most_kills = g.player_state.kills
+            viable_badges = models.Badge.objects.filter(criteria__lte = g.player_state.kills, badge_type=0)
+            for i in viable_badges:
+                newAchieve = achievementHandler(u, i)
+                newAchieve.save()
         if g.player_state.days > u.most_days_survived:
             u.most_days_survived = g.player_state.days
+            viable_badges = models.Badge.objects.filter(criteria__lte = g.player_state.days, badge_type=1)
+            for i in viable_badges:
+                newAchieve = achievementHandler(u, i)
+                newAchieve.save()
         if g.player_state.party > u.most_people:
             u.most_people = g.player_state.party
+            viable_badges = models.Badge.objects.filter(criteria__lte = g.player_state.party, badge_type=2)
+            for i in viable_badges:
+                newAchieve = achievementHandler(u, i)
+                newAchieve.save()
         
         u.save()
 	return render(request, 'game.html', contextDict)
