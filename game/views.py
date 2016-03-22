@@ -132,7 +132,6 @@ def safehouse(request):
     return render(request, 'safehouse.html', contextDict)
 
 def edit_profile(request):
-def edit_profile(request):
     u = request.user
     edited = False
     if request.method == 'POST':
