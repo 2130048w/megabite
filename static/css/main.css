@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Raleway);
+@import url(http://fonts.googleapis.com/css?family=Raleway|Teko);
 
 /*************************
 *******Typography******
@@ -976,6 +976,38 @@ a.accordion-toggle  i{
   display: inline-block;
   float: left;
   width: 20%;
+}
+
+.centered{
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.info {
+  position: relative;
+  color: #FFF;
+  font-family: Teko;
+  font-size: 40px;
+  font-weight: 50px;
+  visibility: hidden;
+  opacity: 0;
+
+}
+
+.about_text a{
+	font-family:Teko;
+	text-align:center;
+}
+
+.container:hover .centered {
+	background: rgba(0,0,0,0.5);
+}
+
+.container:hover .info{
+	visibility: visible;
+	opacity: 1;
 }
 
 #conatcat-info{
