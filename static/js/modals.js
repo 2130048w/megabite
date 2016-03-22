@@ -52,6 +52,12 @@ function buildModalRegistration() {
 		'<input type="password" required="required"  id="password" class="modal_inpt" placeholder="" name="password" title="Enter a valid password">' +
 		'<div class="input_labl">Confirm Password</div>' +
 		'<input type="password" required="required" class="modal_inpt no_margin" placeholder="" name="confirm_password" title="Please confirm password">' +
+		'<div class="input_labl">Picture</div>' +
+		'<div class="file-upload">'+
+		'<label for="upload" class="file-upload__label">Browse</label>'+
+		'<input id="upload" class="file-upload__input" type="file" name="profile_picture" accept="/image/*">'+
+		'</div>'+
+		'<input type="text" id="filename" class="modal_inpt" placeholder="Upload a file.." disabled>' +
 		'</div>' +
 		'<div class="divide"></div>' +
 		'<div class="modal_footer">' +
@@ -65,6 +71,13 @@ function buildModalRegistration() {
 	
 	$(document).ready(function() {
 		document.getElementById("csrfmiddlewaretoken").value = csrftoken;
+		$('#upload').change(function() {
+			var filepath = this.value;
+			var m = filepath.match(/([^\/\\]+)$/);
+			var filename = m[1];
+			$('#filename').val(filename);
+
+	});
 	});
 	
 }

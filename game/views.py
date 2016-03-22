@@ -42,8 +42,8 @@ def register(request):
 
             # Did the user provide a profile picture?
             # If so, we need to get it from the input form and put it in the UserProfile model.
-            if 'picture' in request.FILES:
-                profile.picture = request.FILES['picture']
+            if 'profile_picture' in request.FILES:
+                profile.picture = request.FILES['profile_picture']
 
             # Now we save the UserProfile model instance.
             
@@ -254,10 +254,22 @@ def game(request):
         u.current_game = pickle.dumps(myg)
         if g.player_state.kills > u.most_kills:
             u.most_kills = g.player_state.kills
+            viable_badges = models.Badge.objects.filter(criteria__lte = g.player_state.kills, badge_type=0)
+            for i in viable_badges:
+                newAchieve = achievementHandler(u, i)
+                newAchieve.save()
         if g.player_state.days > u.most_days_survived:
             u.most_days_survived = g.player_state.days
+            viable_badges = models.Badge.objects.filter(criteria__lte = g.player_state.days, badge_type=1)
+            for i in viable_badges:
+                newAchieve = achievementHandler(u, i)
+                newAchieve.save()
         if g.player_state.party > u.most_people:
             u.most_people = g.player_state.party
+            viable_badges = models.Badge.objects.filter(criteria__lte = g.player_state.party, badge_type=2)
+            for i in viable_badges:
+                newAchieve = achievementHandler(u, i)
+                newAchieve.save()
         
         u.save()
 	return render(request, 'game.html', contextDict)
