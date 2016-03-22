@@ -36,7 +36,7 @@
 						{% if user.profile_picture == None %}
 							<img class="profile_picture" src ="{{STATIC_URL}}images/default.jpg"/>
 						{% else %}
-							<img src = "user.profile_picture"/>
+							<img src = {{ MEDIA_URL}}{{user.profile_picture}}/>
 						{% endif %}
 						<a href="/game/edit_profile/">Edit Profile</a>
 					</div>	
