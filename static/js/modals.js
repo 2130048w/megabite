@@ -112,6 +112,27 @@ function buildModalLogin() {
 	});
 }
 
+function buildModalAchievement(name, desc, pic) {
+	var html = '<div id="modal_b" class="modal_dialog">' +
+		'<div class="modal_header">' +
+		'<div class="logo"></div>' +
+		'<div class="close_button">&times;</div>' +
+		'</div>' +
+		'<div class="modal_body">' +
+		'<h2 class="title">Achievement unlocked</h2>' +
+		'<div class="input_labl">'+name+'</div>' +
+		'<img src='+pic+' alt="A shiny badge">' +
+		'<div class="input_labl">'+desc+'</div>' +
+		'<div class="divide"></div>' +
+		'<div class="modal_footer">' +
+		'<input type="submit" name="submit" class="modal_button btn_dark btn-full" id="closebtn" value="OK">' +
+		'</div>' +
+		'</form>' +
+		'</div>';
+
+	showModal(html);
+}
+
 function showModal(html) {
 	modalCtn.append(html);
 	overlay.fadeIn();

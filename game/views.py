@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, HttpResponse
-import pickle
+import pickle, json
 
 @ensure_csrf_cookie
 def index(request):
@@ -267,25 +267,31 @@ def game(request):
         myg['upstate'] = g.update_state
         myg['gstate'] = g.game_state
         myg['tleft'] = g.time_left
+        my_dict = {'achieve' : False} 
         u.current_game = pickle.dumps(myg)
         if g.player_state.kills > u.most_kills:
             u.most_kills = g.player_state.kills
-            viable_badges = models.Badge.objects.filter(criteria__lte = g.player_state.kills, badge_type=0)
+            viable_badges = models.Badge.objects.filter(badge_type=0, criteria__lte = g.player_state.kills)
             for i in viable_badges:
-                newAchieve = achievementHandler(u, i)
-                newAchieve.save()
+                newAchieve = models.achievementHandler.objects.get_or_create(user=u.user, achievement=i)
+                if newAchieve[1] == True:
+                    my_dict = {'achieve' : True, 'badge' : i.name, 'desc' : i.description, 'icon' : i.icon.path}
         if g.player_state.days > u.most_days_survived:
             u.most_days_survived = g.player_state.days
-            viable_badges = models.Badge.objects.filter(criteria__lte = g.player_state.days, badge_type=1)
+            viable_badges = models.Badge.objects.filter(badge_type=1, criteria__lte = g.player_state.days)
             for i in viable_badges:
-                newAchieve = achievementHandler(u, i)
-                newAchieve.save()
+                newAchieve = models.achievementHandler.objects.get_or_create(user=u.user, achievement=i)
+                if newAchieve[1] == True:
+                    my_dict = {'achieve' : True, 'badge' : i.name, 'desc' : i.description, 'icon' : i.icon.path}
         if g.player_state.party > u.most_people:
             u.most_people = g.player_state.party
-            viable_badges = models.Badge.objects.filter(criteria__lte = g.player_state.party, badge_type=2)
+            viable_badges = models.Badge.objects.filter(badge_type=2, criteria__lte = g.player_state.party)
             for i in viable_badges:
-                newAchieve = achievementHandler(u, i)
-                newAchieve.save()
+                newAchieve = models.achievementHandler.objects.get_or_create(user=u.user, achievement=i)
+                if newAchieve[1] == True:
+                    my_dict = {'achieve' : True, 'badge' : i.name, 'desc' : i.description, 'icon' : i.icon.path}
         
         u.save()
+        js_data = json.dumps(my_dict)
+        contextDict['adata'] = js_data
 	return render(request, 'game.html', contextDict)

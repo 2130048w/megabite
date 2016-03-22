@@ -5,6 +5,21 @@
 {% block title %}Game{% endblock %}
 
 {% block body_block %}
+
+<script type="text/javascript">
+window.onload = function(){
+    achievement = {{ adata|safe }};
+	if (achievement.achieve == true) {
+		console.log('Got here');
+		buildModalAchievement(achievement.badge, achievement.desc, achievement.icon);
+		$('.close_button').addClass('modal_open');
+		$('#closebtn').addClass('modal_open');
+		$(overlay).addClass('modal_open');
+		dismissModal();
+		}
+	}
+</script>
+
 	<h2>Time until nightfall: {{ tleft }}</h2>
 	{% if rooms %}
 	<h2>Inside: {{ currentHouse }}</h2></br>
