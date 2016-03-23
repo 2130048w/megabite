@@ -128,7 +128,9 @@ def safehouse(request):
     days_stat = u.most_days_survived
     games_stat = u.games_played
     name = u.user.username
-    contextDict = {'kstat' : kill_stat, 'dstat' : days_stat, 'gstat' : games_stat, 'username': name}
+    partysize = u.most_people
+    badges = models.achievementHandler.objects.filter(user=u)
+    contextDict = {'kstat' : kill_stat, 'dstat' : days_stat, 'gstat' : games_stat, 'username': name, 'pstat':partysize, 'badges':badges}
     return render(request, 'safehouse.html', contextDict)
 
 def edit_profile(request):

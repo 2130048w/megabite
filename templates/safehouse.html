@@ -15,8 +15,16 @@
 					<h3>Welcome, {{username}}</h3>
 	            </div> 
 				<div class="row contact-wrap"> 
+					<div class="profile_picture">
+						{% if user.profile_picture == None %}
+							<img class="profile_picture" src ="{{MEDIA_URL}}images/default.jpg"/>
+						{% else %}
+							<img src = {{ MEDIA_URL}}{{user.profile_picture}}/>
+						{% endif %}
+						<a href="#" class="modal_button" modal-value="modal_c">Edit Profile</a></button>
+					</div>
 					<div class="tables">
-						<table class="leaderboards">
+						<table class="stats">
 							<caption>User Stats</caption>
 							<tr>
 								<th> Most Kills</th>
@@ -30,15 +38,26 @@
 								<th>Games Played</th>
 								<td>{{gstat}}</td>
 							</tr>
-						</table>		
-					</div>
-					<div class="profile_picture">
-						{% if user.profile_picture == None %}
-							<img class="profile_picture" src ="{{STATIC_URL}}images/default.jpg"/>
-						{% else %}
-							<img src = {{ MEDIA_URL}}{{user.profile_picture}}/>
-						{% endif %}
-						<a href="/game/edit_profile/">Edit Profile</a>
+							<tr>
+								<th>Largest Party</th>
+								<td>{{pstat}}</td>
+							</tr>
+						</table>
+						<table class="achievments">
+							<caption>User Achievments</caption>
+							<tr>
+								<th>Description</th>
+								<th>Badge</th>
+								<th>Date</th>
+							</tr>
+							{% for i in badges %}
+							<tr>
+								<td>{{i.achievement.description}}</td>
+								<td>{{i.achievement.icon}}</td>
+								<td>{{i.earned_at}}</td>
+							<tr>
+							{% endfor %}
+						</table>
 					</div>	
 				</div>
 			</div>

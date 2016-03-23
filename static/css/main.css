@@ -5,7 +5,7 @@
 **************************/
 
 body {
-  background: #191919;;
+  background: #191919;
   font-family: 'Raleway', sans-serif;
   color:#4e4e4e;
   line-height: 22px;
@@ -2585,15 +2585,55 @@ shortcodes page css
 .profile_picture{
 	display: inline-block;
 	vertical-align: center;
-	max-width: 200px;
-	max-height: 200px;
+	max-width: 300px;
+	max-height: 300px;
 	height:auto;
-	width:auto;
+	width:70%;
 	border-radius: 25px;
+	float:right;
 }
 
-.edit{
-	
+.profile_picture .modal_button{
+  -webkit-border-radius: 28;
+  -moz-border-radius: 28;
+  border-radius: 28px;
+  font-family: Raleway;
+  color: #ffffff;
+  font-size: 15px;
+  background: #f00014;
+  padding: 8px 20px 10px 20px;
+  text-decoration: none;
+  float: right;
+}
+
+.stats{
+	border: 3px solid white;
+	margin: 25px;
+	padding: 15px;
+	float:right;
+	width:45%;
+	text-align:left;
+	float:left;
+}
+
+.stats th, td, caption{
+	font-size: 17px;
+	font-family: Raleway;
+	text-align: left;
+}
+
+.achievments{
+	border: 3px solid white;
+	margin: 25px;
+	padding: 15px;
+	width:45%;
+	text-align:left;
+}
+
+.achievments th, td, caption{
+	font-size: 17px;
+	font-family: Raleway;
+	text-align: left;
 }
 
 /************************

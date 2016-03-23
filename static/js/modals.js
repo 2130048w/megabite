@@ -8,6 +8,10 @@ $('document').ready(function() {
 			buildModalRegistration();
 		} else if (btnModalVal === 'modal_b') {
 			buildModalLogin();
+		} else if(btnModalVal === 'modal_c') {
+			buildModalEdit();
+		} else if(btnModalVal === 'modal_d'){
+			buildModalAbout();
 		}
 
 		$('.close_button').addClass('modal_open');
@@ -126,6 +130,74 @@ function buildModalAchievement(name, desc, pic) {
 		'<div class="divide"></div>' +
 		'<div class="modal_footer">' +
 		'<input type="submit" name="submit" class="modal_button btn_dark btn-full" id="closebtn" value="OK">' +
+		'</div>' +
+		'</form>' +
+		'</div>';
+
+	showModal(html);
+}
+
+function buildModalEdit() {
+	var csrftoken = getCookie('csrftoken');
+	var html = '<div id="modal_c" class="modal_dialog">' +
+		'<form class="modal_form" name="form_a" id="myForm" method="post" action="/game/edit_profile/" enctype="multipart/form-data">' +
+		'<input type="hidden" id="csrfmiddlewaretoken" name="csrfmiddlewaretoken" value="{{ csrf_token }}">'+
+		'<div class="modal_header">' +
+		'<div class="logo"></div>' +
+		'<div class="close_button">&times;</div>' +
+		'</div>' +
+		'<div class="modal_body">' +
+		'<h2 class="title">Edit</h2>' +
+		'<div class="input_labl">Username</div>' +
+		'<input type="text" required="required" id="username" class="modal_inpt" placeholder="" name="username" title="Enter your full name">' +
+		'<div class="input_labl">Email</div>' +
+		'<input type="email" required="required" id=""email"" class="modal_inpt" placeholder="" name="email" title="Enter a valid email address">' +
+		'<div class="input_labl">Password</div>' +
+		'<input type="password" required="required"  id="password" class="modal_inpt" placeholder="" name="password" title="Enter a valid password">' +
+		'<div class="input_labl">Picture</div>' +
+		'<div class="file-upload">'+
+		'<label for="upload" class="file-upload__label">Browse</label>'+
+		'<input id="upload" class="file-upload__input" type="file" name="profile_picture" accept="/image/*">'+
+		'</div>'+
+		'<input type="text" id="filename" class="modal_inpt" placeholder="Upload a file.." disabled>' +
+		'</div>' +
+		'<div class="divide"></div>' +
+		'<div class="modal_footer">' +
+		'<input type="submit" name="submit" class="modal_button btn_dark btn-full" value="edit">' +
+		'</div>' +
+		'</form>' +
+		'</div>';
+			
+
+	showModal(html);
+	
+	$(document).ready(function() {
+		document.getElementById("csrfmiddlewaretoken").value = csrftoken;
+		$('#upload').change(function() {
+			var filepath = this.value;
+			var m = filepath.match(/([^\/\\]+)$/);
+			var filename = m[1];
+			$('#filename').val(filename);
+
+	});
+	});
+	
+}
+
+function buildModalAbout() {
+	var html = '<div id="modal_d" class="modal_dialog">' +
+		'<div class="modal_header">' +
+		'<div class="logo"></div>' +
+		'<div class="close_button">&times;</div>' +
+		'</div>' +
+		'<div class="modal_body">' +
+		'<h2 class="about">About</h2>' +
+		'<p>Megabite is a game of search and survival</p>' +
+		'<p>Your aim is to survive for as long as possible,</p>' +
+		'<p>during a zombie apocalypse</p>' +
+		'<p>Search for food, ammo and survivors to help you defeat zombies</p>'+
+		'<div class="divide"></div>' +
+		'<div class="modal_footer">' +
 		'</div>' +
 		'</form>' +
 		'</div>';

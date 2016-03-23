@@ -1,3 +1,4 @@
+@import url(http://fonts.googleapis.com/css?family=Raleway|Teko);
 * {
 	margin: 0;
 	padding: 0;
@@ -20,9 +21,10 @@ h2 {
 	color: #fff;
 	font-weight: 600;
 	margin-bottom: 30px;
-	text-align: center;
-	font-size: 14px;
+	text-align: center; 
+	font-size: 20px;
 	letter-spacing: 1px;
+	font-family: Raleway;
 }
 
 h1 {
@@ -30,6 +32,13 @@ h1 {
 	font-size: 30px;
 	margin: 20px 0;
 }
+
+p {
+	text-align: center;
+	font-size: 20px;
+	font-family: Raleway;
+}
+
 
 #content {
 	margin: auto;
@@ -254,7 +263,7 @@ h1 {
 	margin: auto;
 	width: 270px;
 	height: 70px;
-	background-image: url(/static/images/logo2.png);
+	background-image: url(/media/images/logo2.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	transition: 1s;

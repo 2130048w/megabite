@@ -5,7 +5,7 @@ $(document).ready(function() {
 function setUpPage() {
 
     // AJAX POST
-    $('.ajax-button').click(function(){
+    $('.ajax-button').click(function(event){
       console.log('am i called');
 	  event.preventDefault();
 	  var value = this.value;
