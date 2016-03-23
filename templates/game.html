@@ -5,21 +5,7 @@
 {% block title %}Game{% endblock %}
 
 {% block body_block %}
-
-<script type="text/javascript">
-window.onload = function(){
-    achievement = {{ adata|safe }};
-	if (achievement.achieve == true) {
-		console.log('Got here');
-		buildModalAchievement(achievement.badge, achievement.desc, achievement.icon);
-		$('.close_button').addClass('modal_open');
-		$('#closebtn').addClass('modal_open');
-		$(overlay).addClass('modal_open');
-		dismissModal();
-		}
-	}
-</script>
-
+	<div id="game_container">
 	<h2>Time until nightfall: {{ tleft }}</h2>
 	{% if rooms %}
 	<h2>Inside house: {{ currentHouse }}</h2></br>
@@ -38,7 +24,7 @@ window.onload = function(){
 		<h2> Options </h2>
          <ul class="nav navbar-nav">
 		{% for i in options %}
-			<li><a href=""><input type="submit" class="btn-dark" name={{ i }} value={{ i }} /></a></li>
+			<li><input type="submit" class="ajax-button file-upload__label" name={{ i }} value={{ i }} /></li>
 		{% endfor %}
 		</ul>
 		</div>
@@ -47,7 +33,7 @@ window.onload = function(){
 		<h2> Houses </h2>
          <ul class="nav navbar-nav">
 		{% for i in street %}
-			<li><a href=""><input type="submit" name={{ i }} value={{ i }} /></a></li>
+			<li><input type="submit" class="ajax-button file-upload__label" name={{ i }} value={{ i }} /></li>
 		{% endfor %}
 		</ul>
 		</div>
@@ -57,11 +43,12 @@ window.onload = function(){
 		<h2> Rooms </h2>
          <ul class="nav navbar-nav">
 		{% for i in rooms %}
-			<li><a href=""><input type="submit" name={{ i }} value={{ i }} /></a></li>
+			<li><input type="submit" class="ajax-button file-upload__label" name={{ i }} value={{ i }} /></li>
 		{% endfor %}
 		</ul>
 		</div>
 		{% endif %}
 		</form>
+		</div>
 {% endblock %}
 		

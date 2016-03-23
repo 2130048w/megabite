@@ -162,15 +162,13 @@ def edit_profile(request):
     
 def intro(request):
 	return render(request, 'intro.html')
-
+    
+@login_required
 def game(request):
 	contextDict = {}
-	try:
-		u = request.user.player
-	except exceptions.ObjectDoesNotExist:
-		return HttpResponseRedirect('/accounts/register')
 	g = zgame.Game() #Make a new game
 	cstatus = ''
+        u = request.user.player
 	if u.current_game != "":
             myg = pickle.loads(u.current_game) #Otherwise load their game
             g.player_state = myg['state']
@@ -182,41 +180,42 @@ def game(request):
             g.start_new_day()
         if not g.is_game_over():
             if not g.is_day_over():
-		if request.method == 'POST':
-                    if 'MOVE' in request.POST:
+		if request.is_ajax() and request.method == 'POST':
+                    trn = request.POST.get('the_post')
+                    if trn == 'MOVE':
                         g.take_turn('MOVE')
-                    if 'ENTER' in request.POST:
+                    if trn == 'ENTER':
                         g.take_turn('ENTER')
-                    if 'WAIT' in request.POST:
+                    if trn == 'WAIT':
                         g.take_turn('WAIT')	
-                    if 'FIGHT' in request.POST:
+                    if trn =='FIGHT':
                         g.take_turn('FIGHT')
-                    if 'RUN' in request.POST:
+                    if trn == 'RUN':
                         g.take_turn('RUN')
-                    if 'EXIT' in request.POST:
+                    if trn == 'EXIT':
                         g.take_turn('EXIT')	
-                    if 'SEARCH' in request.POST:
+                    if trn == 'SEARCH':
                         g.take_turn('SEARCH', g.street.get_current_house().get_current_room())
                     if g.game_state == 'STREET':
-                        for i in range(len(g.street.house_list)):
-                            if str(i) in request.POST:
-                                cstatus += "Outside house: "+str(i)+"</br>"
+                        for i in range(len(g.street.house_list)): 
+                            if str(i) == trn:
+                                cstatus += "You moved outside house: "+str(i)+"</br>"
                                 g.take_turn('MOVE', i)
-                    if g.game_state == 'HOUSE':
+                    if g.game_state == 'HOUSE': 
                         for i in range(len(g.street.get_current_house().room_list)):
-                            if str(i) in request.POST:
-                                cstatus += "Searched room: "+str(i)+"</br>"
+                            if str(i) == trn:
+                                cstatus += "You searched room: "+str(i)+"</br>"
                                 g.take_turn('SEARCH', i)
-                    if g.game_state == 'STREET':
-                        contextDict['street'] = range(len(g.street.house_list)) #Once again more useful
-                        contextDict['currentHouse'] = g.street.get_current_house()
-                        contextDict['currentStreet'] = g.street
-                    if g.game_state == 'HOUSE':
-                        contextDict['currentHouse'] = g.street.get_current_house()
-                        contextDict['rooms'] = range(len(g.street.get_current_house().room_list)) #Length is more useful for us than the actual list
-                        contextDict['currentRoom'] = g.street.get_current_house().get_current_room()
-                    if g.game_state == 'ZOMBIE':
-                        contextDict['zombies'] = g.street.get_current_house().get_current_room().zombies
+                if g.game_state == 'STREET':
+                    contextDict['street'] = range(len(g.street.house_list)) # more useful
+                    contextDict['currentHouse'] = str(g.street.get_current_house())
+                    contextDict['currentStreet'] = str(g.street)
+                if g.game_state == 'HOUSE':
+                    contextDict['currentHouse'] = str(g.street.get_current_house())
+                    contextDict['rooms'] = range(len(g.street.get_current_house().room_list)) #Length is more useful for us than the actual list
+                    contextDict['currentRoom'] = str(g.street.get_current_house().get_current_room())
+                if g.game_state == 'ZOMBIE':
+                    contextDict['zombies'] = g.street.get_current_house().get_current_room().zombies
             else:
                 # end the day
                 g.end_day()
@@ -255,9 +254,9 @@ def game(request):
         if g.update_state.days > 0:
             cstatus += "New Day: You survived another day!"
 
-        contextDict['status'] = cstatus           
-        contextDict['options'] = g.turn_options   
-	contextDict['state'] = g.player_state
+        contextDict['status'] = cstatus 
+        contextDict['options'] = zgame.ACTIONS[g.game_state]
+	contextDict['state'] = str(g.player_state)
 	contextDict['gstate'] = g.game_state
 	contextDict['tleft'] = g.time_left
 
@@ -274,20 +273,21 @@ def game(request):
             u.most_kills = g.player_state.kills
             viable_badges = models.Badge.objects.filter(badge_type=0, criteria__lte = g.player_state.kills)
             for i in viable_badges:
-                newAchieve = models.achievementHandler.objects.get_or_create(user=u.user, achievement=i)
+                newAchieve = models.achievementHandler.objects.get_or_create(user=request.user, achievement=i)
                 if newAchieve[1] == True:
                     my_dict = {'achieve' : True, 'badge' : i.name, 'desc' : i.description, 'icon' : i.icon.path}
         if g.player_state.days > u.most_days_survived:
             u.most_days_survived = g.player_state.days
             viable_badges = models.Badge.objects.filter(badge_type=1, criteria__lte = g.player_state.days)
             for i in viable_badges:
-                newAchieve = models.achievementHandler.objects.get_or_create(user=u.user, achievement=i)
+                newAchieve = models.achievementHandler.objects.get_or_create(user=request.user, achievement=i)
                 if newAchieve[1] == True:
                     my_dict = {'achieve' : True, 'badge' : i.name, 'desc' : i.description, 'icon' : i.icon.path}
         if g.player_state.party > u.most_people:
             u.most_people = g.player_state.party
         
         u.save()
-        js_data = json.dumps(my_dict)
-        contextDict['adata'] = js_data
-	return render(request, 'game.html', contextDict)
+        contextDict['adata'] = my_dict
+        if request.is_ajax() and request.method == 'POST':
+            return HttpResponse(json.dumps(contextDict), content_type="application/json")
+	return render(request, 'game.html', contextDict) #To handle html requests
