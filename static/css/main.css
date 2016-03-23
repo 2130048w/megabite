@@ -2725,3 +2725,8 @@ img.riz:empty
     height: 260px;
     border: none;
 }
+
+.game_container{
+	vertical-align: center;
+	
+}

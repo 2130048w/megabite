@@ -19,7 +19,7 @@
 						{% if user.profile_picture == None %}
 							<img class="profile_picture" src ="{{MEDIA_URL}}images/default.jpg"/>
 						{% else %}
-							<img src = {{ MEDIA_URL}}{{user.profile_picture}}/>
+							<img src = {{ MEDIA_URL}}{{user.profile_picture}}></img>
 						{% endif %}
 						<a href="#" class="modal_button" modal-value="modal_c">Edit Profile</a></button>
 					</div>
@@ -53,7 +53,7 @@
 							{% for i in badges %}
 							<tr>
 								<td>{{i.achievement.description}}</td>
-								<td>{{i.achievement.icon}}</td>
+								<td><img src={{MEDIA_URL}}{{i.achievement.icon}}></img></td>
 								<td>{{i.earned_at}}</td>
 							<tr>
 							{% endfor %}
