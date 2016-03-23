@@ -952,7 +952,7 @@ a.accordion-toggle  i{
 }
 
 #partner {
-  background: url(../images/bg.jpg) 50% 50% no-repeat;
+  background: url(/media/images/bg.jpg) 50% 50% no-repeat;
   background-size: cover;
 }
 
@@ -2674,3 +2674,14 @@ img.riz:empty
     100% {left:140%;}
 }
 
+/********************
+****House Buttons********
+**********************/
+
+.smlHouse input {
+    background:url(/media/images/sml.png) no-repeat;
+    cursor:pointer;
+    width: 300px;
+    height: 260px;
+    border: none;
+}
