@@ -182,16 +182,6 @@ def game(request):
             g.start_new_day()
         if not g.is_game_over():
             if not g.is_day_over():
-                if g.game_state == 'STREET':
-                    contextDict['street'] = range(len(g.street.house_list)) #Once again more useful
-                    contextDict['currentHouse'] = g.street.get_current_house()
-                    contextDict['currentStreet'] = g.street
-                if g.game_state == 'HOUSE':
-                    contextDict['currentHouse'] = g.street.get_current_house()
-                    contextDict['rooms'] = range(len(g.street.get_current_house().room_list)) #Length is more useful for us than the actual list
-                    contextDict['currentRoom'] = g.street.get_current_house().get_current_room()
-                if g.game_state == 'ZOMBIE':
-                    contextDict['zombies'] = g.street.get_current_house().get_current_room().zombies
 		if request.method == 'POST':
                     if 'MOVE' in request.POST:
                         g.take_turn('MOVE')
@@ -210,25 +200,36 @@ def game(request):
                     if g.game_state == 'STREET':
                         for i in range(len(g.street.house_list)):
                             if str(i) in request.POST:
-                                cstatus += "Outside house "+str(i)
+                                cstatus += "Outside house: "+str(i)+"</br>"
                                 g.take_turn('MOVE', i)
-                                break
                     if g.game_state == 'HOUSE':
                         for i in range(len(g.street.get_current_house().room_list)):
                             if str(i) in request.POST:
-                                cstatus += "Searched room "+str(i)
+                                cstatus += "Searched room: "+str(i)+"</br>"
                                 g.take_turn('SEARCH', i)
-                                break
+                    if g.game_state == 'STREET':
+                        contextDict['street'] = range(len(g.street.house_list)) #Once again more useful
+                        contextDict['currentHouse'] = g.street.get_current_house()
+                        contextDict['currentStreet'] = g.street
+                    if g.game_state == 'HOUSE':
+                        contextDict['currentHouse'] = g.street.get_current_house()
+                        contextDict['rooms'] = range(len(g.street.get_current_house().room_list)) #Length is more useful for us than the actual list
+                        contextDict['currentRoom'] = g.street.get_current_house().get_current_room()
+                    if g.game_state == 'ZOMBIE':
+                        contextDict['zombies'] = g.street.get_current_house().get_current_room().zombies
             else:
                 # end the day
                 g.end_day()
                 g.start_new_day()
         else:
             u.games_played += 1
+            viable_badges = models.Badge.objects.filter(badge_type=2, criteria__lte = u.games_played)
+            for i in viable_badges:
+                newAchieve = models.achievementHandler.objects.get_or_create(user=u.user, achievement=i)
+                if newAchieve[1] == True:
+                    my_dict = {'achieve' : True, 'badge' : i.name, 'desc' : i.description, 'icon' : i.icon.path}
             g = zgame.Game() #Make a new game for that user
             g.start_new_day()
-
-        cstatus = ''
         
         if g.update_state.party<0:
             cstatus += "You lost: {0} people </br>".format(abs(g.update_state.party))
@@ -285,11 +286,6 @@ def game(request):
                     my_dict = {'achieve' : True, 'badge' : i.name, 'desc' : i.description, 'icon' : i.icon.path}
         if g.player_state.party > u.most_people:
             u.most_people = g.player_state.party
-            viable_badges = models.Badge.objects.filter(badge_type=2, criteria__lte = g.player_state.party)
-            for i in viable_badges:
-                newAchieve = models.achievementHandler.objects.get_or_create(user=u.user, achievement=i)
-                if newAchieve[1] == True:
-                    my_dict = {'achieve' : True, 'badge' : i.name, 'desc' : i.description, 'icon' : i.icon.path}
         
         u.save()
         js_data = json.dumps(my_dict)

@@ -22,24 +22,23 @@ window.onload = function(){
 
 	<h2>Time until nightfall: {{ tleft }}</h2>
 	{% if rooms %}
-	<h2>Inside: {{ currentHouse }}</h2></br>
-	<h2>In room: {{ currentRoom }}</h2></br>
+	<h2>Inside house: {{ currentHouse }}</h2></br>
 	{% endif %}
 	{% if street %}
 	<h2>{{ currentStreet }}</h2></br>
-	<h2>Outside: {{ currentHouse }}</h2></br>
 	{% endif %}
 	{% if zombies %}
 	 <h2>You're being attacked by {{ zombies }} zombies!</h2></br>
 	{% endif %}
-	<ul>
+	<h2>{{ state }}</h2>
+	<h2>{% autoescape off %} {{ status }} {% endautoescape %}</h2>
 		<form action="" method="post">
 		{% csrf_token %}
 		<div class="collapse navbar-collapse navbar-right">
 		<h2> Options </h2>
          <ul class="nav navbar-nav">
 		{% for i in options %}
-			<li><a href="#"><input type="submit" class="btn-dark" name={{ i }} value={{ i }} /></a></li>
+			<li><a href=""><input type="submit" class="btn-dark" name={{ i }} value={{ i }} /></a></li>
 		{% endfor %}
 		</ul>
 		</div>
@@ -48,7 +47,7 @@ window.onload = function(){
 		<h2> Houses </h2>
          <ul class="nav navbar-nav">
 		{% for i in street %}
-			<li><a href="#"><input type="submit" name={{ i }} value={{ i }} /></a></li>
+			<li><a href=""><input type="submit" name={{ i }} value={{ i }} /></a></li>
 		{% endfor %}
 		</ul>
 		</div>
@@ -58,17 +57,11 @@ window.onload = function(){
 		<h2> Rooms </h2>
          <ul class="nav navbar-nav">
 		{% for i in rooms %}
-			<li><a href="#"><input type="submit" name={{ i }} value={{ i }} /></a></li>
+			<li><a href=""><input type="submit" name={{ i }} value={{ i }} /></a></li>
 		{% endfor %}
 		</ul>
 		</div>
 		{% endif %}
 		</form>
-	</ul>
-	<div class=center>
-	<ul>
-		<li>{{ state }}</li>
-		<li>{% autoescape off %} {{ status }} {% endautoescape %}</li>
-	</ul></div>
 {% endblock %}
 		
