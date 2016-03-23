@@ -24,6 +24,20 @@ function setUpPage() {
 					}
 					else if (data.street) {
 						html += '<h2>'+data.currentStreet+'</h2></br>'
+						'<section id="map" size=90vh>' +
+       				 	'<div class="container">' + 
+						'<div class="maps">'+
+						'<div class="collapse navbar-collapse navbar-right">'
+						'<ul class="nav navbar-nav">'
+						for (i in data.street) {
+							html+= '<input type="image" src="/media/images/h'+Math.floor((Math.random()*3))+'.png" width="20%"class="ajax-button file-upload__label" name='+i+' value='+i+' />'
+						}	
+						'</ul>' +
+						'</div>' +
+						'</div>' +
+						'</div>' +
+						'</section>' +
+						'</br>'
 					}
 					else if (data.zombies) {
 						html += '<h2>You are being attacked by '+data.zombies+' zombies!</h2></br>'
@@ -55,7 +69,7 @@ function setUpPage() {
 								'<h2> Rooms </h2>'+
 								'<ul class="nav navbar-nav">'
 						for (i in data.rooms) {
-							html+= '<li><input type="submit" class="ajax-button file-upload__label" name='+i+' value='+i+' /></li>'
+							html+= '<li><input type="image" src="/media/images/rooms/r'+Math.floor((Math.random()*i))+'.png" class="ajax-button file-upload__label" name='+i+' value='+i+' /></li>'
 						}
 						html+= '</ul>'+
 							   '</div>'

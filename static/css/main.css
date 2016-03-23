@@ -2730,3 +2730,34 @@ img.riz:empty
 	vertical-align: center;
 	
 }
+
+/***********************
+*****Game Map*************
+***********************/
+
+#map {
+  background: url(/media/images/map.png) 100% 100% no-repeat;
+  background-size: 100% 100%;
+}
+
+#map {
+  color: #fff;
+  text-align: center;
+}
+
+#map h2, 
+#map h3 {
+  color: #fff;
+}
+
+.maps ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.maps ul li{
+  display: inline-block;
+  float: left;
+  width: 20%;
+}
