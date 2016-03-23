@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, HttpResponse
-import pickle, json
+import pickle, json, random
 
 @ensure_csrf_cookie
 def index(request):
@@ -110,7 +110,7 @@ def user_logout(request):
     logout(request)
 
     # Take the user back to the homepage.
-    return HttpResponseRedirect('game/index')
+    return HttpResponseRedirect('/game/')
 
 def leaderboards(request):
     kill_rankings = Player.objects.order_by('-most_kills')[:20]
@@ -168,6 +168,7 @@ def intro(request):
 @login_required
 def game(request):
 	contextDict = {}
+	roomData = {} # Need to assign this so I can check it later
 	g = zgame.Game() #Make a new game
 	cstatus = ''
         u = request.user.player
@@ -180,8 +181,24 @@ def game(request):
             g.street = myg['street']
         else:
             g.start_new_day()
-        if not g.is_game_over():
-            if not g.is_day_over():
+        if g.is_game_over():
+            #Game over man... game over.
+            u.games_played += 1
+            viable_badges = models.Badge.objects.filter(badge_type=2, criteria__lte = u.games_played)
+            for i in viable_badges:
+                newAchieve = models.achievementHandler.objects.get_or_create(user=u.user, achievement=i)
+                if newAchieve[1] == True:
+                    my_dict = {'achieve' : True, 'badge' : i.name, 'desc' : i.description, 'icon' : i.icon.path}
+            g = zgame.Game() #Make a new game for that user
+            g.start_new_day()
+        else:
+            if g.is_day_over():
+                # end the day
+                g.end_day()
+                g.start_new_day()
+                #if we wanted to let the player carry on from where they were:
+                #g.game_state = myg['gstate']
+            else:
 		if request.is_ajax() and request.method == 'POST':
                     trn = request.POST.get('the_post')
                     if trn == 'MOVE':
@@ -209,28 +226,34 @@ def game(request):
                                 cstatus += "You searched room: "+str(i)+"</br>"
                                 g.take_turn('SEARCH', i)
                 if g.game_state == 'STREET':
-                    contextDict['street'] = range(len(g.street.house_list)) # more useful
-                    contextDict['currentHouse'] = str(g.street.get_current_house())
+                    #contextDict['street'] = range(len(g.street.house_list)) # All we need to iterate through the houses in the js
+                    houseList = {}
+                    for i in range(len(g.street.house_list)): #This for loop puts the houses in a dictionary assigned images according to their size, so it's consistent on page reloads
+                        if len(g.street.house_list[i].room_list) >= 12:
+                            houseList[str(i)] = '2'
+                        elif len(g.street.house_list[i].room_list) >= 9:
+                            houseList[str(i)] = '1'
+                        else:
+                            houseList[str(i)] = '0' #Amazingly strings are more useful for us. Saves ugly js type conversion
+                    contextDict['streetData'] = houseList
+                    #contextDict['currentHouse'] = str(g.street.get_current_house())
                     contextDict['currentStreet'] = str(g.street)
                 if g.game_state == 'HOUSE':
                     contextDict['currentHouse'] = str(g.street.get_current_house())
-                    contextDict['rooms'] = range(len(g.street.get_current_house().room_list)) #Length is more useful for us than the actual list
-                    contextDict['currentRoom'] = str(g.street.get_current_house().get_current_room())
+                    #contextDict['rooms'] = range(len(g.street.get_current_house().room_list)) # All we need to iterate through the rooms in the js
+                    if myg['mappedHouse'] == True: #If we're in the same house we don't need to generate a new mapping of images!
+                        roomData = myg['roomData'] #We can load the old mapping from the database
+                    else:
+                        for i in range(len(g.street.get_current_house().room_list)): #This for loop puts the rooms assigned with a random image into the database - All these complex datatypes just for consistent images!
+                            roomData[str(i)] = str(random.randint(0, 12)) #better as strings again
+                    contextDict['roomData'] = roomData #Pass to the contextDict
+                    #contextDict['currentRoom'] = str(g.street.get_current_house().get_current_room()) not sure if used
+                    
                 if g.game_state == 'ZOMBIE':
                     contextDict['zombies'] = g.street.get_current_house().get_current_room().zombies
-            else:
-                # end the day
-                g.end_day()
-                g.start_new_day()
-        else:
-            u.games_played += 1
-            viable_badges = models.Badge.objects.filter(badge_type=2, criteria__lte = u.games_played)
-            for i in viable_badges:
-                newAchieve = models.achievementHandler.objects.get_or_create(user=u.user, achievement=i)
-                if newAchieve[1] == True:
-                    my_dict = {'achieve' : True, 'badge' : i.name, 'desc' : i.description, 'icon' : i.icon.path}
-            g = zgame.Game() #Make a new game for that user
-            g.start_new_day()
+                    roomData = myg['roomData'] #We can load the old mapping from the database since zombies MUST be in a house
+            
+    
         
         if g.update_state.party<0:
             cstatus += "You lost: {0} people </br>".format(abs(g.update_state.party))
@@ -263,7 +286,12 @@ def game(request):
 	contextDict['tleft'] = g.time_left
 
 	myg = {}
-	
+	if roomData != {}:
+            myg['roomData'] = roomData #Save it to the database
+        if g.game_state == 'HOUSE' or g.game_state == 'ZOMBIE': #We only want to map new houses
+            myg['mappedHouse'] = True #We mapped this house
+        else:
+            myg['mappedHouse'] = False #Not mapped yet - resets the boolean when we exit to the street :D - THIS IS GENIUS 
         myg['street'] = g.street
         myg['state'] = g.player_state
         myg['upstate'] = g.update_state

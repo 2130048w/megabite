@@ -19,25 +19,11 @@ function setUpPage() {
 				console.log(data)
 				var csrftoken = getCookie('csrftoken');
 				var html = '<h2>Time until nightfall: '+data.tleft+'</h2>'
-					if (data.rooms) {
+					if (data.roomData) {
 						html += '<h2>Inside house: '+data.currentHouse+'</h2></br>'
 					}
-					else if (data.street) {
+					else if (data.streetData) {
 						html += '<h2>'+data.currentStreet+'</h2></br>'
-						'<section id="map" size=90vh>' +
-       				 	'<div class="container">' + 
-						'<div class="maps">'+
-						'<div class="collapse navbar-collapse navbar-right">'
-						'<ul class="nav navbar-nav">'
-						for (i in data.street) {
-							html+= '<input type="image" src="/media/images/h'+Math.floor((Math.random()*3))+'.png" width="20%"class="ajax-button file-upload__label" name='+i+' value='+i+' />'
-						}	
-						'</ul>' +
-						'</div>' +
-						'</div>' +
-						'</div>' +
-						'</section>' +
-						'</br>'
 					}
 					else if (data.zombies) {
 						html += '<h2>You are being attacked by '+data.zombies+' zombies!</h2></br>'
@@ -46,30 +32,30 @@ function setUpPage() {
 						'<h2>'+data.status+'</h2>'+
 						'<form action="" method="post">'+
 						'<input type="hidden" id="csrfmiddlewaretoken" name="csrfmiddlewaretoken" value='+csrftoken+'>'+
-						'<div class="collapse navbar-collapse navbar-right">'+
 						'<h2> Options </h2>'+
+						'<div align="middle">'+
 						'<ul class="nav navbar-nav">'
 						for (i in data.options) {
 							html += '<li><input type="submit" class="ajax-button file-upload__label" name='+data.options[i]+' value='+data.options[i]+' /></li>'
 						}
 						html+= '</ul>'+
-							   '</div>'
-					if (data.street) {
+							   '</div></br>'
+					if (data.streetData) {
 						html += '<div class="collapse navbar-collapse navbar-right">'+
-								'<h2> Houses </h2>'+
+								'<h2> Street map </h2>'+
 								'<ul class="nav navbar-nav">'
-						for (i in data.street) {
-							html+= '<li><input type="submit" class="ajax-button file-upload__label" name='+i+' value='+i+' /></li>'
-						}
-						html+= '</ul>'+
-							   '</div>'
+						for (i in data.streetData) {
+							html+= '<li><input type="image" src="/media/images/h'+data.streetData[i]+'.png" width="200" height="200" class="ajax-button" name='+i+' value='+i+' /></li>'
+						}	
+						html += '</ul>' +
+								'</div>'
 					}
-					if (data.rooms) {
+					if (data.roomData) {
 						html += '<div class="collapse navbar-collapse navbar-right">'+
-								'<h2> Rooms </h2>'+
+								'<h2> House map </h2>'+
 								'<ul class="nav navbar-nav">'
-						for (i in data.rooms) {
-							html+= '<li><input type="image" src="/media/images/rooms/r'+Math.floor((Math.random()*i))+'.png" class="ajax-button file-upload__label" name='+i+' value='+i+' /></li>'
+						for (i in data.roomData) {
+							html+= '<li><input type="image" src="/media/images/rooms/r'+data.roomData[i]+'.png" width="200" height="200" class="ajax-button" name='+i+' value='+i+' /></li>'
 						}
 						html+= '</ul>'+
 							   '</div>'
@@ -90,9 +76,7 @@ function setUpPage() {
         // handle a non-successful response
 		
         error : function(xhr,errmsg,err) {
-            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console - THIS HELPED ME SOOO MUCH
 		}
         });
 	})

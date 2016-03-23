@@ -6,49 +6,9 @@
 
 {% block body_block %}
 	<div id="game_container">
-	<h2>Time until nightfall: {{ tleft }}</h2>
-	{% if rooms %}
-	<h2>Inside house: {{ currentHouse }}</h2></br>
-	{% endif %}
-	{% if street %}
-	<h2>{{ currentStreet }}</h2></br>
-	{% endif %}
-	{% if zombies %}
-	 <h2>You're being attacked by {{ zombies }} zombies!</h2></br>
-	{% endif %}
-	<h2>{{ state }}</h2>
-	<h2>{% autoescape off %} {{ status }} {% endautoescape %}</h2>
-		<form action="" method="post">
-		{% csrf_token %}
-		<div class="collapse navbar-collapse navbar-right">
-		<h2> Options </h2>
-         <ul class="nav navbar-nav">
-		{% for i in options %}
-			<li><input type="submit" class="ajax-button file-upload__label" name={{ i }} value={{ i }} /></li>
-		{% endfor %}
-		</ul>
-		</div>
-		{% if street %}
-		<div class="collapse navbar-collapse navbar-right">
-		<h2> Houses </h2>
-        <ul class="nav navbar-nav">
-		{% for i in street %}
-			<li><input type="submit" class="ajax-button file-upload__label" name={{ i }} value={{ i }} /></li>
-		{% endfor %}
-		</ul>
-		</div>
-		{% endif %}
-		{% if rooms %}
-		<div class="collapse navbar-collapse navbar-right">
-		<h2> Rooms </h2>
-         <ul class="nav navbar-nav">
-		{% for i in rooms %}
-			<li><input type="submit" class="ajax-button file-upload__label" name={{ i }} value={{ i }} /></li>
-		{% endfor %}
-		</ul>
-		</div>
-		{% endif %}
-		</form>
-		</div>
+	<h2>
+		<input type="submit" class="ajax-button file-upload__label" name='Play' value='PLAY' />
+		</h2>
+	</div>
 {% endblock %}
 		
