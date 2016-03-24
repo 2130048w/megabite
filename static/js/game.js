@@ -19,7 +19,6 @@ function setUpPage() {
 								'<div class="inner3">'+
 								'</div>'+
 								'</div>');
-	  setTimeout(function(){
         $.ajax({
         url : "/game/play/", // the endpoint
         type : "POST", // http method
@@ -84,7 +83,6 @@ function setUpPage() {
             console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console - THIS HELPED ME SOOO MUCH
 		}
         });
-		}, 2000);
 	})
 
 
