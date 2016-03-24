@@ -1,0 +1,97 @@
+.stop {
+  animation-play-state: paused;
+  -moz-animation-play-state: paused;
+  -webkit-animation-play-state: paused;
+}
+.trigger {
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@color1', endColorstr='@color2');
+  background-image: -webkit-linear-gradient(top, #161616 25%, #000);
+  background-image: -moz-linear-gradient(top, #161616 25%, #000);
+  border: 1px solid #111;
+  border-right-color: #333;
+  border-bottom-color: #333;
+  text-decoration: none;
+  color: #fff;
+  padding: 10px;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 0.8em;
+  text-transform: lowercase;
+  margin: 10px auto;
+  display: block;
+  width: 140px;
+  border-radius: 5px;
+  text-align: center;
+}
+.trigger:hover {
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@color1', endColorstr='@color2');
+  background-image: -webkit-linear-gradient(top, #202020 25%, #161616);
+  background-image: -moz-linear-gradient(top, #202020 25%, #161616);
+}
+
+#ajaxloader {
+  width: 30px;
+  height: 30px;
+  border: 8px solid #fff;
+  border-radius: 50%;
+  -webkit-box-shadow: 0 0 25px 2px;
+  -moz-box-shadow: 0 0 25px 2px;
+  box-shadow: 0 0 25px 2px;
+  color: #fff;
+  border-color: #f00;
+  color: #cc0000;
+  border-right-color: transparent;
+  border-top-color: transparent;
+  -webkit-animation: spin-right 1s linear infinite normal;
+  -moz-animation: spin-right 1s linear infinite normal;
+  -ms-animation: spin-right 1s linear infinite normal;
+  animation: spin-right 1s linear infinite normal;
+  -webkit-animation-delay: 0;
+  -moz-animation-delay: 0;
+  -o-animation-delay: 0;
+  animation-delay: 0;
+  margin: 30px auto 0;
+}
+
+#ajaxloader:after {
+  display: block;
+  width: 13px;
+  height: 13px;
+  margin: 3px;
+  border: 6px solid #f00;
+  content: " ";
+  border-radius: 50%;
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+}
+
+.truecenter {
+    margin: auto;
+    padding: 10px;
+	float: none;
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+	text-align: center;
+}
+
+.inline {
+	display: inline-block;
+	float: none;
+}
+
+.centerhoz {
+	margin: auto;
+	width: 50%;
+    padding: 10px;
+	float: none;
+	text-align: center;
+}
+
+#game_container {
+    margin: auto;
+    width: 90%;
+	height: 90%;
+    border: 3px solid #1d1d1d;
+    padding: 10px;
+	text-align: center;
+}

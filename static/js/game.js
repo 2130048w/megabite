@@ -9,6 +9,7 @@ function setUpPage() {
       console.log('am i called');
 	  event.preventDefault();
 	  var value = this.value;
+	  $('#game_container').html('<div id="ajaxloader" class="truecenter"></div>');
         $.ajax({
         url : "/game/play/", // the endpoint
         type : "POST", // http method
@@ -33,32 +34,26 @@ function setUpPage() {
 						'<form action="" method="post">'+
 						'<input type="hidden" id="csrfmiddlewaretoken" name="csrfmiddlewaretoken" value='+csrftoken+'>'+
 						'<h2> Options </h2>'+
-						'<div align="middle">'+
-						'<ul class="nav navbar-nav">'
+						'<div>'
 						for (i in data.options) {
-							html += '<li><input type="submit" class="ajax-button file-upload__label" name='+data.options[i]+' value='+data.options[i]+' /></li>'
+							html += '<input type="submit" class="ajax-button file-upload__label inline" name='+data.options[i]+' value='+data.options[i]+' />'
 						}
-						html+= '</ul>'+
-							   '</div></br>'
+						html+= '</div>'
 					if (data.streetData) {
-						html += '<div class="collapse navbar-collapse navbar-right">'+
-								'<h2> Street map </h2>'+
-								'<ul class="nav navbar-nav">'
+						html += '<div>'+
+								'<h2> Street map </h2>'
 						for (i in data.streetData) {
-							html+= '<li><input type="image" src="/media/images/h'+data.streetData[i]+'.png" width="200" height="200" class="ajax-button" name='+i+' value='+i+' /></li>'
+							html+= '<input type="image" src="/media/images/h'+data.streetData[i]+'.png" width="200" height="200" class="ajax-button inline" name='+i+' value='+i+' />'
 						}	
-						html += '</ul>' +
-								'</div>'
+						html += '</div>'
 					}
 					if (data.roomData) {
-						html += '<div class="collapse navbar-collapse navbar-right">'+
-								'<h2> House map </h2>'+
-								'<ul class="nav navbar-nav">'
+						html += '<div>'+
+								'<h2> House map </h2>'
 						for (i in data.roomData) {
-							html+= '<li><input type="image" src="/media/images/rooms/r'+data.roomData[i]+'.png" width="200" height="200" class="ajax-button" name='+i+' value='+i+' /></li>'
+							html+= '<input type="image" src="/media/images/rooms/r'+data.roomData[i]+'.png" width="200" height="200" class="ajax-button inline" name='+i+' value='+i+' />'
 						}
-						html+= '</ul>'+
-							   '</div>'
+						html+= '</div>'
 					}
 					html += '</form>'
 				$('#game_container').html(html);
