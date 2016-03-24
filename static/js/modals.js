@@ -127,7 +127,6 @@ function buildModalAchievement(name, desc, pic) {
 		'<div class="input_labl">'+name+'</div>' +
 		'<img src='+pic+' alt="A shiny badge">' +
 		'<div class="input_labl">'+desc+'</div>' +
-		'<div class="divide"></div>' +
 		'<div class="modal_footer">' +
 		'<input type="submit" name="submit" class="modal_button btn_dark btn-full" id="closebtn" value="OK">' +
 		'</div>' +
@@ -196,11 +195,8 @@ function buildModalAbout() {
 		'<p>Your aim is to survive for as long as possible,</p>' +
 		'<p>during a zombie apocalypse</p>' +
 		'<p>Search for food, ammo and survivors to help you defeat zombies</p>'+
-		'<div class="divide"></div>' +
-		'<div class="modal_footer">' +
-		'</div>' +
-		'</form>' +
 		'</div>';
+		
 
 	showModal(html);
 }

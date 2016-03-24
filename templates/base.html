@@ -28,8 +28,6 @@
     <link rel="apple-touch-icon-precomposed" href="{{ MEDIA_URL }}images/ico/apple-touch-icon-57-precomposed.png">
 </head><!--/head-->
 	
-	{% if user.is_authenticated %}
-	
     <header id="header">
 
         <nav class="navbar navbar-inverse" role="banner">
@@ -41,47 +39,22 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/game/"><img src="{{ MEDIA_URL }}images/logo2.png" width="200" height="52" alt="logo"></a>
+                    <a class="navbar-brand" href="/game/index"><img src="{{ MEDIA_URL }}images/logo2.png" width="200" height="52" alt="logo"></a>
                 </div>
 				
                 <div class="collapse navbar-collapse navbar-right">
                     <ul class="nav navbar-nav">
-                        <li><a href="/game/">Home</a></li>
+                        <li><a href="/game/index">Home</a></li>
+						<li><a href="/game/leaderboards/">LeaderBoards</a></li>
+						<li><a href="#" class="modal_button" modal-value="modal_d">About</a></li>
+						{% if user.is_authenticated %}
 						<li><a href="/game/safehouse/">SafeHouse</a></li>
 						<li><a href="/game/play/">Play</a></li>
-                        <li><a href="/game/leaderboards/">LeaderBoards</a></li>
-                        <li><a href="/game/logout">LogOut</a></li>                       
-                    </ul>
-                </div>
-            </div><!--/.container-->
-        </nav><!--/nav-->
-		
-    </header><!--/header-->
-	
-	{% else %}
-
-    <header id="header">
-
-        <nav class="navbar navbar-inverse" role="banner">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="/game/"><img src="{{ MEDIA_URL }}images/logo2.png" width="200" height="52" alt="logo"></a>
-                </div>
-				
-                <div class="collapse navbar-collapse navbar-right">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="/game/">Home</a></li>
-                        <li><a href="/game/leaderboards/">LeaderBoards</a></li>
-						<li><a href="#" class="modal_button" modal-value="modal_d">About</a></li>
-                        <li><a href="#" class="modal_button" modal-value="modal_a">Register</a></li>
+                        <li><a href="/game/logout">LogOut</a></li>
+						{% else %}
+						<li><a href="#" class="modal_button" modal-value="modal_a">Register</a></li>
 						<li><a href="#" class="modal_button" modal-value="modal_b">Login</a></li>
-                       
+						{% endif %}
                     </ul>
                 </div>
             </div><!--/.container-->
@@ -89,7 +62,6 @@
 		
     </header><!--/header-->
 	
-	{% endif %}
 	<div id="modal_container"></div>
 	<div id="overlay"></div>
 	<body class="homepage">

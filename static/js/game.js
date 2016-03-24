@@ -9,7 +9,17 @@ function setUpPage() {
       console.log('am i called');
 	  event.preventDefault();
 	  var value = this.value;
-	  $('#game_container').html('<div id="ajaxloader" class="truecenter"></div>');
+	  $('#game_container').html('<div class="loadcontainer">'+
+								'<div class="outer">'+
+								'</div>'+
+								'<div class="inner">'+
+								'</div>'+
+								'<div class="inner2">'+
+								'</div>'+
+								'<div class="inner3">'+
+								'</div>'+
+								'</div>');
+	  setTimeout(function(){
         $.ajax({
         url : "/game/play/", // the endpoint
         type : "POST", // http method
@@ -74,6 +84,7 @@ function setUpPage() {
             console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console - THIS HELPED ME SOOO MUCH
 		}
         });
+		}, 2000);
 	})
 
 
