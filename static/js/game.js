@@ -9,16 +9,7 @@ function setUpPage() {
       console.log('am i called');
 	  event.preventDefault();
 	  var value = this.value;
-	  $('#game_container').html('<div class="loadcontainer">'+
-								'<div class="outer">'+
-								'</div>'+
-								'<div class="inner">'+
-								'</div>'+
-								'<div class="inner2">'+
-								'</div>'+
-								'<div class="inner3">'+
-								'</div>'+
-								'</div>');
+	  showLoading();
         $.ajax({
         url : "/game/play/", // the endpoint
         type : "POST", // http method
@@ -28,7 +19,7 @@ function setUpPage() {
         success : function(data) {
 				console.log(data)
 				var csrftoken = getCookie('csrftoken');
-				var html = '<h2>Time until nightfall: '+data.tleft+'</h2>'
+				var html = '<div id="overlay"></div><h2>Time until nightfall: '+data.tleft+'</h2>'
 					if (data.roomData) {
 						html += '<h2>Inside house: '+data.currentHouse+'</h2></br>'
 					}
@@ -36,7 +27,8 @@ function setUpPage() {
 						html += '<h2>'+data.currentStreet+'</h2></br>'
 					}
 					else if (data.zombies) {
-						html += '<h2>You are being attacked by '+data.zombies+' zombies!</h2></br>'
+						html += '<h2>You are being attacked by '+data.zombies+' zombies!</h2></br>'+
+								'<img src="/media/images/zom.png" width="190" height="270"></br>'
 					}
 						html += '<h2>'+data.state+'</h2>'+
 						'<h2>'+data.status+'</h2>'+
@@ -66,6 +58,7 @@ function setUpPage() {
 					}
 					html += '</form>'
 				$('#game_container').html(html);
+				overlay.hide();
 				if (data.adata.achieve == true) {
 					console.log('Got here');
 					buildModalAchievement(data.adata.badge, data.adata.desc, data.adata.icon);
@@ -84,6 +77,20 @@ function setUpPage() {
 		}
         });
 	})
+	
+	function showLoading() {
+	$('#overlay').fadeIn();
+	$('#game_container').append('<div class="loadcontainer">'+
+								'<div class="outer">'+
+								'</div>'+
+								'<div class="inner">'+
+								'</div>'+
+								'<div class="inner2">'+
+								'</div>'+
+								'<div class="inner3">'+
+								'</div>'+
+								'</div>');
+}
 
 
 
