@@ -46,13 +46,15 @@ function setUpPage() {
 				'<h2> Options </h2>'+
 				'<div>'
 				if (data.newday) {
-					html +='<input type="submit" class="ajax-button file-upload__label inline" name="continue" value="Continue" />'
+					html +='<input type="submit" class="gamebutton ajax-button" name="continue" value="Continue"/>'
 				}
 				if (data.gameover) {
-					html +='<input type="submit" class="ajax-button file-upload__label inline" name="new" value="Play Again" />'
+					html +='<input type="submit" class="gamebutton ajax-button" name="continue" value="Continue"/>'
 				}
 				for (i in data.options) {
-					html += '<input type="submit" class="ajax-button file-upload__label inline" name='+data.options[i]+' value='+data.options[i]+' />'
+					if (i != 0 || data.zombies) { //First option is obsolete with our navigation and I'm too lazy to filter it out in views.py - This file was already open
+						html += '<input type="submit" class="gamebutton ajax-button inline" name='+data.options[i]+' value='+data.options[i]+' />'
+						}
 				}
 					html+= '</div>'
 				if (data.streetData) {

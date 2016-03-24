@@ -264,13 +264,13 @@ def game(request):
             contextDict['options'] = zgame.ACTIONS[g.game_state]
             contextDict['state'] = str(g.player_state)
             contextDict['gstate'] = g.game_state
-            if g.time_left > 0:
-                contextDict['tleft'] = g.time_left
-            else:
-                contextDict['tleft'] = 0 #People don't like seeing negative time left
+            contextDict['tleft'] = g.time_left
             
-    
-        
+        #Recheck the state after moving
+        if g.is_game_over():
+            contextDict = {'gameover' : True}
+        elif g.is_day_over():
+            contextDict = {'newday' : True}
         if g.update_state.party<0:
             cstatus += "You lost: {0} people </br>".format(abs(g.update_state.party))
 
@@ -303,7 +303,7 @@ def game(request):
         if g.game_state == 'HOUSE' or g.game_state == 'ZOMBIE': #We only want to map new houses
             myg['mappedHouse'] = True #We mapped this house
         else:
-            myg['mappedHouse'] = False #Not mapped yet - resets the boolean when we exit to the street :D - This was a good fix maybe I was too happy about it at the time... 
+            myg['mappedHouse'] = False #Cowboy fix - Won't remember a house after you exit / run.
         myg['street'] = g.street
         myg['state'] = g.player_state
         myg['upstate'] = g.update_state
