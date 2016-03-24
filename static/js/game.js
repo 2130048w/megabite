@@ -19,7 +19,10 @@ function setUpPage() {
         success : function(data) {
 				console.log(data)
 				var csrftoken = getCookie('csrftoken');
-				var html = '<div id="overlay"></div><h2>Time until nightfall: '+data.tleft+'</h2>'
+				var html = ''
+				if (data.tleft) {
+					html += '<div id="overlay"></div><h2>Time until nightfall: '+data.tleft+'</h2>'
+				}
 					if (data.roomData) {
 						html += '<h2>Inside house: '+data.currentHouse+'</h2></br>'
 					}
@@ -30,12 +33,23 @@ function setUpPage() {
 						html += '<h2>You are being attacked by '+data.zombies+' zombies!</h2></br>'+
 								'<img src="/media/images/zom.png" width="190" height="270"></br>'
 					}
-						html += '<h2>'+data.state+'</h2>'+
-						'<h2>'+data.status+'</h2>'+
-						'<form action="" method="post">'+
+					if (data.state) {
+						html += '<h2>'+data.state+'</h2>'
+					}
+						html += '<h2>'+data.status+'</h2>'
+					if (data.newday) {
+						html += '<h2>Night has fallen. Your party grows hungry.</h2>'
+					}
+						html += '<form action="" method="post">'+
 						'<input type="hidden" id="csrfmiddlewaretoken" name="csrfmiddlewaretoken" value='+csrftoken+'>'+
 						'<h2> Options </h2>'+
 						'<div>'
+						if (data.newday) {
+							html +='<input type="submit" class="ajax-button file-upload__label inline" name="continue" value="Continue" />'
+						}
+						if (data.gameover) {
+							html +='<input type="submit" class="ajax-button file-upload__label inline" name="new" value="Play Again" />'
+						}
 						for (i in data.options) {
 							html += '<input type="submit" class="ajax-button file-upload__label inline" name='+data.options[i]+' value='+data.options[i]+' />'
 						}
