@@ -1,5 +1,11 @@
-.loadcontainer {
-	left: 48%;
+.loadcorner {
+	left: 6%;
+	top: 12%;
+	position: absolute;
+}
+
+.loadmiddle {
+	left: 50%;
 	top: 50%;
 	position: absolute;
 }

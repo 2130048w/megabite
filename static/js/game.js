@@ -6,7 +6,6 @@ function setUpPage() {
 
     // AJAX POST
     $('.ajax-button').click(function(event){
-      console.log('am i called');
 	  event.preventDefault();
 	  var value = this.value;
 	  showLoading();
@@ -17,64 +16,65 @@ function setUpPage() {
 
         // handle a successful response
         success : function(data) {
-				console.log(data)
 				var csrftoken = getCookie('csrftoken');
 				var html = ''
 				if (data.tleft) {
 					html += '<div id="overlay"></div><h2>Time until nightfall: '+data.tleft+'</h2>'
 				}
-					if (data.roomData) {
-						html += '<h2>Inside house: '+data.currentHouse+'</h2></br>'
+				if (data.zombies) {
+					html += '<h2>You are being attacked by '+data.zombies+' zombies!</h2></br>'+
+							'<img src="/media/images/zom.png" width="190" height="270"></br>'
+				}
+				else if (data.roomData) {
+					html += '<h2>Inside house: '+data.currentHouse+'</h2></br>'
+				}
+				else if (data.streetData) {
+					html += '<h2>'+data.currentStreet+'</h2></br>'
+				}
+				if (data.state) {
+					html += '<h2>'+data.state+'</h2>'
+				}
+					html += '<h2>'+data.status+'</h2>'
+				if (data.newday) {
+					html += '<h2>Night has fallen. Your party grows hungry.</h2>'
+				}
+				if (data.gameover) {
+						html +='<h2>You died. Game over.</h2>'
 					}
-					else if (data.streetData) {
-						html += '<h2>'+data.currentStreet+'</h2></br>'
+				html += '<form action="" method="post">'+
+				'<input type="hidden" id="csrfmiddlewaretoken" name="csrfmiddlewaretoken" value='+csrftoken+'>'+
+				'<h2> Options </h2>'+
+				'<div>'
+				if (data.newday) {
+					html +='<input type="submit" class="ajax-button file-upload__label inline" name="continue" value="Continue" />'
+				}
+				if (data.gameover) {
+					html +='<input type="submit" class="ajax-button file-upload__label inline" name="new" value="Play Again" />'
+				}
+				for (i in data.options) {
+					html += '<input type="submit" class="ajax-button file-upload__label inline" name='+data.options[i]+' value='+data.options[i]+' />'
+				}
+					html+= '</div>'
+				if (data.streetData) {
+					html += '<div>'+
+							'<h2> Street map </h2>'
+					for (i in data.streetData) {
+						html+= '<input type="image" src="/media/images/h'+data.streetData[i]+'.png" width="200" height="200" class="ajax-button inline" name='+i+' value='+i+' />'
+					}	
+					html += '</div>'
+				}
+				if (data.roomData) {
+					html += '<div>'+
+							'<h2> House map </h2>'
+					for (i in data.roomData) {
+						html+= '<input type="image" src="/media/images/rooms/r'+data.roomData[i]+'.png" width="200" height="200" class="ajax-button inline" name='+i+' value='+i+' />'
 					}
-					else if (data.zombies) {
-						html += '<h2>You are being attacked by '+data.zombies+' zombies!</h2></br>'+
-								'<img src="/media/images/zom.png" width="190" height="270"></br>'
+					html+= '</div>'
 					}
-					if (data.state) {
-						html += '<h2>'+data.state+'</h2>'
-					}
-						html += '<h2>'+data.status+'</h2>'
-					if (data.newday) {
-						html += '<h2>Night has fallen. Your party grows hungry.</h2>'
-					}
-						html += '<form action="" method="post">'+
-						'<input type="hidden" id="csrfmiddlewaretoken" name="csrfmiddlewaretoken" value='+csrftoken+'>'+
-						'<h2> Options </h2>'+
-						'<div>'
-						if (data.newday) {
-							html +='<input type="submit" class="ajax-button file-upload__label inline" name="continue" value="Continue" />'
-						}
-						if (data.gameover) {
-							html +='<input type="submit" class="ajax-button file-upload__label inline" name="new" value="Play Again" />'
-						}
-						for (i in data.options) {
-							html += '<input type="submit" class="ajax-button file-upload__label inline" name='+data.options[i]+' value='+data.options[i]+' />'
-						}
-						html+= '</div>'
-					if (data.streetData) {
-						html += '<div>'+
-								'<h2> Street map </h2>'
-						for (i in data.streetData) {
-							html+= '<input type="image" src="/media/images/h'+data.streetData[i]+'.png" width="200" height="200" class="ajax-button inline" name='+i+' value='+i+' />'
-						}	
-						html += '</div>'
-					}
-					if (data.roomData) {
-						html += '<div>'+
-								'<h2> House map </h2>'
-						for (i in data.roomData) {
-							html+= '<input type="image" src="/media/images/rooms/r'+data.roomData[i]+'.png" width="200" height="200" class="ajax-button inline" name='+i+' value='+i+' />'
-						}
-						html+= '</div>'
-					}
-					html += '</form>'
+				html += '</form>'
 				$('#game_container').html(html);
 				overlay.hide();
 				if (data.adata.achieve == true) {
-					console.log('Got here');
 					buildModalAchievement(data.adata.badge, data.adata.desc, data.adata.icon);
 					$('.close_button').addClass('modal_open');
 					$('#closebtn').addClass('modal_open');
@@ -93,8 +93,8 @@ function setUpPage() {
 	})
 	
 	function showLoading() {
-	$('#overlay').fadeIn();
-	$('#game_container').append('<div class="loadcontainer">'+
+	//$('#overlay').fadeIn(); too aggressive on the eyes
+	$('#game_container').append('<div class="loadcorner">'+
 								'<div class="outer">'+
 								'</div>'+
 								'<div class="inner">'+

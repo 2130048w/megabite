@@ -191,13 +191,12 @@ def game(request):
                 viable_badges = models.Badge.objects.filter(badge_type=2, criteria__lte = u.games_played)
                 for i in viable_badges:
                     newAchieve = models.achievementHandler.objects.get_or_create(user=u.user, achievement=i)
-                if newAchieve[1] == True:
-                    my_dict = {'achieve' : True, 'badge' : i.name, 'desc' : i.description, 'icon' : i.icon.url}
+                    if newAchieve[1] == True:
+                        my_dict = {'achieve' : True, 'badge' : i.name, 'desc' : i.description, 'icon' : i.icon.url}
                 g = zgame.Game() #Make a new game for that user
                 g.start_new_day()
             else:
                 #Game over man... game over.
-                cstatus += "Game over!"
                 contextDict['gameover'] = True
         else:
             if g.is_day_over():
@@ -211,64 +210,64 @@ def game(request):
                 else:
                     contextDict['newday'] = True
         if contextDict['gameover'] == False and contextDict['newday'] == False:
-                if trn == 'MOVE':
-                    g.take_turn('MOVE')
-                elif trn == 'ENTER':
-                    g.take_turn('ENTER')
-                    cstatus += 'You enter the house'
-                elif trn == 'WAIT':
-                    g.take_turn('WAIT')
-                    cstatus += 'You wait for a bit..'
-                elif trn =='FIGHT':
-                    g.take_turn('FIGHT')
-                elif trn == 'RUN':
-                    g.take_turn('RUN')
-                    cstatus += 'You run out to the street!'
-                elif trn == 'EXIT':
-                    g.take_turn('EXIT')
-                    cstatus += 'You exit the house'
-                elif trn == 'SEARCH':
-                    g.take_turn('SEARCH', g.street.get_current_house().get_current_room())
-                    
-                if g.game_state == 'STREET':
-                    for i in range(len(g.street.house_list)): 
-                        if str(i) == trn:
-                            cstatus += "You moved outside house: "+str(i)+"</br>"
-                            g.take_turn('MOVE', i)
-                    houseList = {}
-                    for i in range(len(g.street.house_list)): #This for loop puts the houses in a dictionary assigned images according to their size, so it's consistent on page reloads
-                        if len(g.street.house_list[i].room_list) >= 12:
-                            houseList[str(i)] = '2'
-                        elif len(g.street.house_list[i].room_list) >= 9:
-                            houseList[str(i)] = '1'
-                        else:
-                            houseList[str(i)] = '0' #Amazingly strings are more useful for us. Saves ugly js type conversion
-                    contextDict['streetData'] = houseList
-                    contextDict['currentStreet'] = str(g.street)
-                    
-                if g.game_state == 'HOUSE': 
-                    for i in range(len(g.street.get_current_house().room_list)):
-                        if str(i) == trn:
-                            cstatus += "You searched room: "+str(i)+"</br>"
-                            g.take_turn('SEARCH', i)
-                    contextDict['currentHouse'] = str(g.street.get_current_house())
-                    if myg['mappedHouse'] == True: #If we're in the same house we don't need to generate a new mapping of images!
-                        roomData = myg['roomData'] #We can load the old mapping from the database
+            if trn == 'MOVE':
+                g.take_turn('MOVE')
+            elif trn == 'ENTER':
+                g.take_turn('ENTER')
+                cstatus += 'You enter the house'
+            elif trn == 'WAIT':
+                g.take_turn('WAIT')
+                cstatus += 'You wait for a bit..'
+            elif trn =='FIGHT':
+                g.take_turn('FIGHT')
+            elif trn == 'RUN':
+                g.take_turn('RUN')
+                cstatus += 'You run out to the street!'
+            elif trn == 'EXIT':
+                g.take_turn('EXIT')
+                cstatus += 'You exit the house'
+            elif trn == 'SEARCH':
+                g.take_turn('SEARCH', g.street.get_current_house().get_current_room())
+                
+            if g.game_state == 'STREET':
+                for i in range(len(g.street.house_list)): 
+                    if str(i) == trn:
+                        cstatus += "You moved outside house: "+str(i)+"</br>"
+                        g.take_turn('MOVE', i)
+                houseList = {}
+                for i in range(len(g.street.house_list)): #This for loop puts the houses in a dictionary assigned images according to their size, so it's consistent on page reloads
+                    if len(g.street.house_list[i].room_list) >= 12:
+                        houseList[str(i)] = '2'
+                    elif len(g.street.house_list[i].room_list) >= 9:
+                        houseList[str(i)] = '1'
                     else:
-                        for i in range(len(g.street.get_current_house().room_list)): #This for loop puts the rooms assigned with a random image into the database - All these complex datatypes just for consistent images!
-                            roomData[str(i)] = str(random.randint(0, 12)) #better as strings again
-                    contextDict['roomData'] = roomData #Pass to the contextDict
-                    
-                if g.game_state == 'ZOMBIE':
-                    contextDict['zombies'] = g.street.get_current_house().get_current_room().zombies
-                    roomData = myg['roomData'] #We can load the old mapping from the database since zombies MUST be in a house
-                contextDict['options'] = zgame.ACTIONS[g.game_state]
-                contextDict['state'] = str(g.player_state)
-                contextDict['gstate'] = g.game_state
-                if g.time_left > 0:
-                    contextDict['tleft'] = g.time_left
+                        houseList[str(i)] = '0' #Amazingly strings are more useful for us. Saves ugly js type conversion
+                contextDict['streetData'] = houseList
+                contextDict['currentStreet'] = str(g.street)
+                
+            if g.game_state == 'HOUSE': 
+                for i in range(len(g.street.get_current_house().room_list)):
+                    if str(i) == trn:
+                        cstatus += "You searched room: "+str(i)+"</br>"
+                        g.take_turn('SEARCH', i)
+                contextDict['currentHouse'] = str(g.street.get_current_house())
+                if myg['mappedHouse'] == True: #If we're in the same house we don't need to generate a new mapping of images!
+                    roomData = myg['roomData'] #We can load the old mapping from the database
                 else:
-                    contextDict['tleft'] = 0 #People don't like seeing negative time left
+                    for i in range(len(g.street.get_current_house().room_list)): #This for loop puts the rooms assigned with a random image into the database - All these complex datatypes just for consistent images!
+                        roomData[str(i)] = str(random.randint(0, 12)) #better as strings again
+                contextDict['roomData'] = roomData #Pass to the contextDict
+                
+            if g.game_state == 'ZOMBIE':
+                contextDict['zombies'] = g.street.get_current_house().get_current_room().zombies
+                roomData = myg['roomData'] #We can load the old mapping from the database since zombies MUST be in a house
+            contextDict['options'] = zgame.ACTIONS[g.game_state]
+            contextDict['state'] = str(g.player_state)
+            contextDict['gstate'] = g.game_state
+            if g.time_left > 0:
+                contextDict['tleft'] = g.time_left
+            else:
+                contextDict['tleft'] = 0 #People don't like seeing negative time left
             
     
         
