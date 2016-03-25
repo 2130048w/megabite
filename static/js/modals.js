@@ -68,7 +68,7 @@ function buildModalRegistration() {
 		'</div>' +
 		'<div class="divide"></div>' +
 		'<div class="modal_footer">' +
-		'<input type="submit" name="submit" class="modal_button btn_dark btn-full" value="register">' +
+		'<input type="submit" name="submit" class="modal_submit_button btn_dark btn-full" value="register">' +
 		'</div>' +
 		'</form>' +
 		'</div>';
@@ -83,7 +83,7 @@ function buildModalRegistration() {
 		$('#filename').val(filename);
 	});
 	
-	$('.modal_button').click(function(event){
+	$('.modal_submit_button').click(function(event){
 	  var un = $('#username').val();
 	  var pw = $('#password').val();
 	  var cpw = $('#cpassword').val();
@@ -184,14 +184,14 @@ function buildModalLogin() {
 		'</div>' + 
 		'<div class="divide"></div>' +
 		'<div class="modal_footer">' +
-		'<input type="submit" name="submit" class="modal_button btn_dark btn-full" id="" value="Login">' +
+		'<input type="submit" name="submit" class="modal_submit_button btn_dark btn-full" id="" value="Login">' +
 		'</div>' +
 		'</form>' +
 		'</div>';
 
 	showModal(html);
 	
-	$('.modal_button').click(function(event){
+	$('.modal_submit_button').click(function(event){
 	  event.preventDefault();
 	  ajaxLogin($('#username').val(), $('#password').val());
 	});
@@ -234,10 +234,10 @@ function buildModalAchievement(name, desc, pic) {
 		'<div class="modal_body">' +
 		'<h2 class="title">Achievement unlocked</h2>' +
 		'<div class="input_labl">'+name+'</div>' +
-		'<img src='+pic+' alt="A shiny badge">' +
+		'<div class="input_labl"><img src='+pic+' alt="A shiny badge"></div>' +
 		'<div class="input_labl">'+desc+'</div>' +
 		'<div class="modal_footer">' +
-		'<input type="submit" name="submit" class="modal_button btn_dark btn-full" id="closebtn" value="OK">' +
+		'<input type="submit" name="submit" class="submit_modal_button btn_dark btn-full" id="closebtn" value="OK">' +
 		'</div>' +
 		'</form>' +
 		'</div>';
@@ -247,43 +247,135 @@ function buildModalAchievement(name, desc, pic) {
 
 function buildModalEdit() {
 	var csrftoken = getCookie('csrftoken');
-	var html = '<div id="modal_c" class="modal_dialog">' +
-		'<form class="modal_form" name="form_a" id="myForm" method="post" action="/game/edit_profile/" enctype="multipart/form-data">' +
-		'<input type="hidden" id="csrfmiddlewaretoken" name="csrfmiddlewaretoken" value="'+csrftoken+'>'+
+	var html = '<div id="modal_a" class="modal_dialog">' +
+		'<form class="modal_form" name="form_a" id="myForm" method="post" action="/game/register/" enctype="multipart/form-data">' +
+		'<input type="hidden" id="csrfmiddlewaretoken" name="csrfmiddlewaretoken" value="'+csrftoken+'">'+
 		'<div class="modal_header">' +
 		'<div class="logo"></div>' +
 		'<div class="close_button">&times;</div>' +
 		'</div>' +
 		'<div class="modal_body">' +
-		'<h2 class="title">Edit</h2>' +
+		'<h2 class="title">Registration</h2>' +
 		'<div class="input_labl">Username</div>' +
+		'<div class="error" id="username_error"></div>'+
 		'<input type="text" required="required" id="username" class="modal_inpt" placeholder="" name="username" title="Enter your full name">' +
 		'<div class="input_labl">Email</div>' +
-		'<input type="email" required="required" id=""email"" class="modal_inpt" placeholder="" name="email" title="Enter a valid email address">' +
-		'<div class="input_labl">Password</div>' +
+		'<div class="error" id="email_error"></div>'+
+		'<input type="email" required="required" id="email" class="modal_inpt" placeholder="" name="email" title="Enter a valid email address">' +
+		'<div class="input_labl">Old Password</div>' +
+		'<div class="error" id="password_error"></div>'+
 		'<input type="password" required="required"  id="password" class="modal_inpt" placeholder="" name="password" title="Enter a valid password">' +
+		'<div class="input_labl">New Password</div>' +
+		'<div class="error" id="new_password_error"></div>'+
+		'<input type="password" id="npassword" class="modal_inpt" placeholder="" name="password" title="Enter a valid password">' +
+		'<div class="input_labl">Confirm New Password</div>' +
+		'<input type="password" id="cpassword" class="modal_inpt no_margin" placeholder="" name="confirm_password" title="Please confirm password">' +
 		'<div class="input_labl">Picture</div>' +
 		'<div class="file-upload">'+
 		'<label for="upload" class="file-upload__label">Browse</label>'+
-		'<input id="upload" class="file-upload__input" type="file" name="profile_picture" accept="/image/*">'+
+		'<input id="upload" class="file-upload__input" type="file" name="profile_picture">'+
 		'</div>'+
 		'<input type="text" id="filename" class="modal_inpt" placeholder="Upload a file.." disabled>' +
 		'</div>' +
 		'<div class="divide"></div>' +
 		'<div class="modal_footer">' +
-		'<input type="submit" name="submit" class="modal_button btn_dark btn-full" value="edit">' +
+		'<input type="submit" name="submit" class="modal_submit_button btn_dark btn-full" value="Edit">' +
 		'</div>' +
 		'</form>' +
 		'</div>';
 			
 
 	showModal(html);
+	
 	$('#upload').change(function() {
 		var filepath = this.value;
 		var m = filepath.match(/([^\/\\]+)$/);
 		var filename = m[1];
 		$('#filename').val(filename);
 	});
+	
+	$('.modal_submit_button').click(function(event){
+	  var un = $('#username').val();
+	  var pw = $('#npassword').val();
+	  var cpw = $('#cpassword').val();
+	  event.preventDefault();
+	  if (pw == cpw) { //The one thing we don't validate in django, might be better to pass this to the view and handle it there, appending it to the errors list
+		  var formData = new FormData();
+		  formData.append("username", un);
+		  formData.append("old_password", $('#password').val());
+		  formData.append("password", pw);
+		  formData.append("email", $('#email').val());
+		  formData.append("profile_picture", $('#upload')[0].files[0]); //Either this or 50 lines of xhtml processing to upload files through ajax 
+			$.ajax({
+				url : "/game/edit_profile/", // the endpoint
+				type : "POST", // http method
+				data : formData,
+				processData: false,  // tell jQuery not to process the data
+				contentType: false,   // tell jQuery not to set contentType
+				
+				success : function(data) {
+					if (data.edit == true) {
+						showEditSuccess(un, pw);
+					}
+					else {
+						$('#username_error').html('')
+						$('#password_error').html('')
+						$('#email_error').html('')
+						if (data.errors) {
+							for (i in data.errors) {
+								if (i == 'username') {
+									$('#username_error').append(data.errors[i])
+								}
+								else if (i == 'password') {
+									$('#password_error').append(data.errors[i])
+								}
+								else if (i == 'email') {
+									$('#email_error').append(data.errors[i])
+								}
+							}
+						}
+						if (data.password_error) {
+							$('#password_error').html(data.password_error)
+						}
+					}
+				},
+				
+				error : function(xhr,errmsg,err) {
+					console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console - THIS HELPED ME SOOO MUCH
+				}
+			});
+		}
+		else {
+			$('#new_password_error').html('Passwords have to match');
+		}
+	});
+}
+
+function showEditSuccess(un, pw) {
+	var csrftoken = getCookie('csrftoken');
+	var html = '<div id="modal_a" class="modal_dialog">' +
+		'<form class="modal_form" name="form_a" id="myForm" method="post" action="/game/register/" enctype="multipart/form-data">' +
+		'<input type="hidden" id="csrfmiddlewaretoken" name="csrfmiddlewaretoken" value="'+csrftoken+'">'+
+		'<div class="modal_header">' +
+		'<div class="logo"></div>' +
+		'<div class="close_button">&times;</div>' +
+		'</div>' +
+		'<div class="modal_body">' +
+		'<h2 class="title">Edit</h2>' +
+		'<div class="input_labl">Succesfully Edited</div>' +
+		'<div class="modal_footer">' +
+		'<input type="submit" name="submit" class="modal_open modal_button btn_dark btn-full" value="OK">' +
+		'</div>' +
+		'</form>' +
+		'</div>';
+			
+
+	modalCtn.html(html);
+	$('.modal_open').click(function(event) {
+		event.preventDefault();
+		window.location.replace('/game/safehouse/'); //redirect them to the safehouse
+	});
+	
 }
 
 function buildModalAbout() {
@@ -298,7 +390,6 @@ function buildModalAbout() {
 		'<p>Your aim is to survive for as long as possible,</p>' +
 		'<p>during a zombie apocalypse</p>' +
 		'<p>Search for food, ammo and survivors to help you defeat zombies</p>'+
-
 		'</div>';
 		
 

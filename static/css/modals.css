@@ -96,7 +96,8 @@ p {
 	display: none;
 }
 
-.modal_button {
+.modal_button, 
+.modal_submit_button {
 	float: left;
 	margin: 20px 20px 0 0;
 	padding: 14px 25px;

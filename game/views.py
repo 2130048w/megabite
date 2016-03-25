@@ -42,6 +42,7 @@ def register(request):
             # If so, we need to get it from the input form and put it in the UserProfile model.
             if 'profile_picture' in request.FILES:
                 player.profile_picture = request.FILES['profile_picture']
+
             # Now we save the UserProfile model instance.
             
             player.save()
@@ -90,7 +91,7 @@ def myLogin(request):
 
     #Not a POST request so we need to redirect
     else:
-        return render(request, '/game/index/', {})
+        return render(request, '/game/', {})
 
 @login_required
 def user_logout(request):
@@ -122,33 +123,32 @@ def safehouse(request):
     contextDict = {'kstat' : kill_stat, 'dstat' : days_stat, 'gstat' : games_stat, 'username': name, 'pstat':partysize, 'badges':badges, 'photo':photo}
     return render(request, 'safehouse.html', contextDict)
 
+@login_required
 def edit_profile(request):
     u = request.user
-    edited = False
-    if request.method == 'POST':
-		user_form = UserForm(data=request.POST, instance=u)
-		player_form = PlayerForm(data=request.POST, instance=u)
-		
-		if user_form.is_valid() and player_form.is_valid():
-			u = user_form.save()
-			u.set_password(u.password)
-			update_session_auth_hash(request, u)
-			u.save()
-			
-			profile = player_form.save(commit=False)
-			profile.user = u
-			
-			if 'profile_picture' in request.FILES:
-				profile.profile_picture = request.FILES['profile_picture']
-			
-			profile.save()
-			edited = True
-		
+    edit = False
+    if request.is_ajax() and request.method == 'POST':
+        old_password = request.POST.get('old_password')
+        user = authenticate(username=u.username, password=old_password)
+        # If we have a User object, the details are correct.
+        # If None (Python's way of representing the absence of a value), no user
+        # with matching credentials was found.
+        if user:
+            user_form = UserForm(data=request.POST, instance=u)
+            if user_form.is_valid():
+                user = user_form.save()
+                user.set_password(user.password)
+                user.player = u.player
+                update_session_auth_hash(request, user)
+                if 'profile_picture' in request.FILES:
+                    user.player.profile_picture = request.FILES['profile_picture']
+                user.save()
+                edit = True
+            return HttpResponse(json.dumps({'edit' : edit, 'errors' : user_form.errors }), content_type="application/json")
+        else:
+            return HttpResponse(json.dumps({ 'password_error' : "Incorrect password" }), content_type="application/json")
     else:
-		user_form = UserForm()
-		player_form = PlayerForm()
-    return render( request, 'edit_profile.html', 
-		{'user_form':user_form, 'profile_form': player_form, 'edited':edited} )	
+        return render(request, '/game/', {})
     
     
 def intro(request):
@@ -209,6 +209,7 @@ def game(request):
                 cstatus += 'You wait for a bit..'
             elif trn =='FIGHT':
                 g.take_turn('FIGHT')
+                cstatus += 'You attack the zombies'
             elif trn == 'RUN':
                 g.take_turn('RUN')
                 cstatus += 'You run out to the street!'
