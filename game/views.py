@@ -12,22 +12,18 @@ import pickle, json, random
 @ensure_csrf_cookie
 def index(request):
     return render(request, 'index.html', {})
-
-@ensure_csrf_cookie    
+    
 def register(request):
-    # A boolean value for telling the template whether the registration was successful.
-    # Set to False initially. Code changes value to True when registration succeeds.
     registered = False
 
-    # If it's a HTTP POST, we're interested in processing form data.
-    if request.method == 'POST':
+    if request.is_ajax() and request.method == 'POST':
         # Attempt to grab information from the raw form information.
         # Note that we make use of both UserForm and PlayerForm.
         user_form = forms.UserForm(data=request.POST)
-        profile_form = forms.PlayerForm(data=request.POST)
+        player_form = forms.PlayerForm(data=request.POST)
 
         # If the two forms are valid...
-        if user_form.is_valid() and profile_form.is_valid():
+        if user_form.is_valid() and player_form.is_valid():
             # Save the user's form data to the database.
             user = user_form.save()
 
@@ -39,17 +35,17 @@ def register(request):
             # Now sort out the Player instance.
             # Since we need to set the user attribute ourselves, we set commit=False.
             # This delays saving the model until we're ready to avoid integrity problems.
-            profile = profile_form.save(commit=False)
-            profile.user = user
+            player = player_form.save(commit=False)
+            player.user = user
 
             # Did the user provide a profile picture?
             # If so, we need to get it from the input form and put it in the UserProfile model.
             if 'profile_picture' in request.FILES:
-                profile.picture = request.FILES['profile_picture']
+                player.profile_picture = request.FILES['profile_picture']
 
             # Now we save the UserProfile model instance.
             
-            profile.save()
+            player.save()
 
             # Update our variable to tell the template registration was successful.
             registered = True
@@ -57,19 +53,16 @@ def register(request):
 			# Invalid form or forms - mistakes or something else?
 			# Print problems to the terminal.
 			# They'll also be shown to the user.
-	return render(request, 'register.html', {'reg' : registered})
+        return HttpResponse(json.dumps({'reg' : registered, 'errors' : user_form.errors}), content_type="application/json")
     else:
-	return render(request, 'index.html', {})
+	return render(request, '/game/index/', {})
 
-@ensure_csrf_cookie
 def myLogin(request):
-
-    # If the request is a HTTP POST, try to pull out the relevant information.
-    if request.method == 'POST':
+    if request.is_ajax() and request.method == 'POST':
         # Gather the username and password provided by the user.
-        # This information is obtained from the login form.
-        username = request.POST['username']
-        password = request.POST['password']
+        # This information is obtained from the login form, passed through AJAX post.
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
         # Use Django's machinery to attempt to see if the username/password
         # combination is valid - a User object is returned if it is.
@@ -86,23 +79,19 @@ def myLogin(request):
                     login(request, user)
                 else:
                     # An inactive account was used - no logging in!
-                    return alert("Your account is disabled.")
+                    return HttpResponse(json.dumps({ 'error' : "Your account is disabled." }), content_type="application/json")
             else:
                 # Bad pw was provided. So we can't log the user in.
-                print "Incorrect password: {0}, {1}".format(username, password)
-                #TODO: Sleek error message
+                return HttpResponse(json.dumps({ 'password_error' : "Incorrect password" }), content_type="application/json")
         else:
-                # Bad un was provided. So we can't log the user in.
-                print "Incorrect username: {0}, {1}".format(username, password)
-                #TODO: Sleek error message
-        return index(request)
+            # Bad un was provided. So we can't log the user in.
+            return HttpResponse(json.dumps({ 'username_error' : "Incorrect username" }), content_type="application/json")
+        
+        return HttpResponse(json.dumps({}), content_type="application/json")
 
-    # The request is not a HTTP POST, so display the login form.
-    # This scenario would most likely be a HTTP GET.
+    #Not a POST request so we need to redirect
     else:
-        # No context variables to pass to the template system, hence the
-        # blank dictionary object...
-        return render(request, 'index.html', {})
+        return render(request, '/game/index/', {})
 
 @login_required
 def user_logout(request):
@@ -129,8 +118,9 @@ def safehouse(request):
     games_stat = u.games_played
     name = u.user.username
     partysize = u.most_people
+    photo = u.profile_picture
     badges = models.achievementHandler.objects.filter(user=u.user)
-    contextDict = {'kstat' : kill_stat, 'dstat' : days_stat, 'gstat' : games_stat, 'username': name, 'pstat':partysize, 'badges':badges}
+    contextDict = {'kstat' : kill_stat, 'dstat' : days_stat, 'gstat' : games_stat, 'username': name, 'pstat':partysize, 'badges':badges, 'photo':photo}
     return render(request, 'safehouse.html', contextDict)
 
 def edit_profile(request):
@@ -138,28 +128,28 @@ def edit_profile(request):
     edited = False
     if request.method == 'POST':
 		user_form = UserForm(data=request.POST, instance=u)
-		profile_form = PlayerForm(data=request.POST, instance=u)
+		player_form = PlayerForm(data=request.POST, instance=u)
 		
-		if user_form.is_valid() and profile_form.is_valid():
+		if user_form.is_valid() and player_form.is_valid():
 			u = user_form.save()
 			u.set_password(u.password)
 			update_session_auth_hash(request, u)
 			u.save()
 			
-			profile = profile_form.save(commit=False)
+			profile = player_form.save(commit=False)
 			profile.user = u
 			
 			if 'profile_picture' in request.FILES:
-				profile.picture = request.FILES['profile_picture']
+				profile.profile_picture = request.FILES['profile_picture']
 			
 			profile.save()
 			edited = True
 		
     else:
 		user_form = UserForm()
-		profile_form = PlayerForm()
+		player_form = PlayerForm()
     return render( request, 'edit_profile.html', 
-		{'user_form':user_form, 'profile_form': profile_form, 'edited':edited} )	
+		{'user_form':user_form, 'profile_form': player_form, 'edited':edited} )	
     
     
 def intro(request):

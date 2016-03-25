@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Raleway);
+@import url(http://fonts.googleapis.com/css?family=Raleway|Teko);
 * {
 	margin: 0;
 	padding: 0;
@@ -29,9 +29,8 @@ h1 {
 
 p {
 	text-align: center;
-	font-size: 17px;
+	font-size: 20px;
 	font-family: Raleway;
-	color: #fff;
 }
 
 
@@ -54,6 +53,10 @@ p {
 	background: #070707;
 }
 
+.error {
+	color: #a6a6a6
+}
+
 #overlay {
 	background: rgba(0, 0, 0, 0.7);
 	position: fixed;
@@ -71,7 +74,7 @@ p {
 	width: 380px;
 	height: auto;
 	background-color: #252525;
-	background-image: url("http://www.designbolts.com/wp-content/uploads/2012/11/Free-Topographic-Map-Seamless-pattern.jpg");
+	background-image: url("/media/images/mp.jpg");
 	background-repeat: repeat;
 	background-attatchment: scroll;
 	background-position: 0 0;
@@ -295,39 +298,6 @@ p {
 .custom-select:hover {
 	background: #1a1a1a;
 }
-
-.country_select {
-	background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
-	border: 0 none;
-	border-radius: 0;
-	color: #fff;
-	cursor: pointer;
-	font-size: 11px;
-	font-weight: 600;
-	letter-spacing: 1px;
-	text-transform: uppercase;
-	-webkit-box-sizing: border-box;
-	/* Safari/Chrome, other WebKit */
-	-moz-box-sizing: border-box;
-	/* Firefox, other Gecko */
-	box-sizing: border-box;
-	/* Opera/IE 8+ */
-	padding: 12px;
-	width: 100%;
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	font-family: 'Open Sans', sans-serif;
-	text-align: center;
-}
-
-.country_select option {
 	background: #1d1d1d none repeat scroll 0 0;
 	text-align: center;
 }

@@ -16,11 +16,7 @@
 	            </div> 
 				<div class="row contact-wrap"> 
 					<div class="profile_picture">
-						{% if user.profile_picture == None %}
-							<img class="profile_picture" src ="{{MEDIA_URL}}images/default.jpg"/>
-						{% else %}
-							<img src = {{ MEDIA_URL}}{{user.profile_picture}}></img>
-						{% endif %}
+							<img class="profile_picture" src = {{ MEDIA_URL}}{{photo}}></img>
 						<a href="#" class="modal_button" modal-value="modal_c">Edit Profile</a>
 					</div>
 					<div class="tables">
