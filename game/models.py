@@ -4,7 +4,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Player(models.Model):
     user = models.OneToOneField(User)
-    profile_picture = models.ImageField(upload_to='images/profile_pictures', blank=True)
+    profile_picture = models.ImageField(upload_to='images/profile_pictures', default="/media/images/default.jpg")
     games_played = models.IntegerField(default=0, blank=False)
     most_days_survived = models.IntegerField(default=0, blank=False)
     most_kills = models.IntegerField(default=0, blank=False)

@@ -17,7 +17,6 @@ def register(request):
     registered = False
 
     if request.is_ajax() and request.method == 'POST':
-        print request.POST
         # Attempt to grab information from the raw form information.
         # Note that we make use of both UserForm and PlayerForm.
         user_form = forms.UserForm(data=request.POST)
