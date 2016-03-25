@@ -42,7 +42,6 @@ def register(request):
             # If so, we need to get it from the input form and put it in the UserProfile model.
             if 'profile_picture' in request.FILES:
                 player.profile_picture = request.FILES['profile_picture']
-
             # Now we save the UserProfile model instance.
             
             player.save()
