@@ -4,7 +4,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Player(models.Model):
     user = models.OneToOneField(User)
-    profile_picture = models.ImageField(upload_to='static/images', blank=True)
+    profile_picture = models.ImageField(upload_to='images/profile_pictures', blank=True)
     games_played = models.IntegerField(default=0, blank=False)
     most_days_survived = models.IntegerField(default=0, blank=False)
     most_kills = models.IntegerField(default=0, blank=False)
@@ -21,7 +21,7 @@ class Badge(models.Model):
      criteria = models.IntegerField(default=25, blank=False)
      badge_type = models.IntegerField(default=0, blank=False)
      level = models.IntegerField(default=1, blank=False)
-     icon = models.ImageField(upload_to='icon_images', blank=True)
+     icon = models.ImageField(upload_to='images/badges', blank=True)
 
 class achievementHandler(models.Model):
     user = models.ForeignKey(User)
