@@ -21,34 +21,37 @@
 						{% else %}
 							<img src = {{ MEDIA_URL}}{{user.profile_picture}}></img>
 						{% endif %}
-						<a href="#" class="modal_button" modal-value="modal_c">Edit Profile</a></button>
+						<a href="#" class="modal_button" modal-value="modal_c">Edit Profile</a>
 					</div>
 					<div class="tables">
-						<table class="stats">
+						<table class="leaderboards">
 							<caption>User Stats</caption>
 							<tr>
-								<th> Most Kills</th>
+								<td> Most Kills</td>
 								<td>{{kstat}}</td>
 							</tr>
 							<tr>
-								<th> Most Days</th>
+								<td> Most Days</td>
 								<td>{{dstat}}</td>
 							</tr>
 							<tr>
-								<th>Games Played</th>
+								<td>Games Played</td>
 								<td>{{gstat}}</td>
 							</tr>
 							<tr>
-								<th>Largest Party</th>
+								<td>Largest Party</td>
 								<td>{{pstat}}</td>
 							</tr>
 						</table>
-						<table class="achievments">
+						</div>
+						<div class="tables">
+						<div class="achievements">
+						<table class="leaderboards">
 							<caption>User Achievments</caption>
 							<tr>
-								<th>Description</th>
-								<th>Badge</th>
-								<th>Date</th>
+								<th><h1>Description<h1></th>
+								<th><h1>Badge</h1></th>
+								<th><h1>Date</h1></th>
 							</tr>
 							{% for i in badges %}
 							<tr>
@@ -58,6 +61,8 @@
 							<tr>
 							{% endfor %}
 						</table>
+						</div>
+						</div>
 					</div>	
 				</div>
 			</div>

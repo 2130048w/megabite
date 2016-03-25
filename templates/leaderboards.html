@@ -14,32 +14,40 @@
 	                <h2>LeaderBoards</h2>
 	            </div> 
 				<div class="row contact-wrap"> 
-					<div class="tables">
-						<table class="leaderboards">
-							<caption>Top Killers</caption>
+					<table class="leaderboards">
+						<caption>Top Killers</caption>
+						<thead>
 							<tr>
-								<th>Username</th>
-								<th>Kills</th>
-							{% for i in kranks %}	
+								<th><h1>Username</h1></th>
+								<th><h1>No. of Kills</h1></th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for i in kranks %}
 							<tr>
 								<td>{{i}}</td>
-								<td>{{i.most_kills}}</td>								
+								<td>{{i.most_kills}}</td>
 							</tr>
 							{% endfor %}
-						</table>
-						<table class="leaderboards">
-							<caption>Top Survivors</caption>
+						</tbody>
+					</table>
+					<table class="leaderboards">
+					<caption>Top Survivors</caption>
+						<thead>
 							<tr>
-								<th>Username</th>
-								<th>Days Survived</th>
-							{% for i in sranks %}	
+								<th><h1>Username</h1></th>
+								<th><h1>No. of Days</h1></th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for y in sranks %}
 							<tr>
-								<td>{{i}}</td>
-								<td>{{i.most_days_survived}}</td>
+								<td>{{y}}</td>
+								<td>{{y.most_days_survived}}</td>
 							</tr>
 							{% endfor %}
-						</table>		
-					</div>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
