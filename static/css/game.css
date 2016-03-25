@@ -138,3 +138,18 @@
     padding: 10px;
 	text-align: center;
 }
+
+
+
+input[type="image"]:hover {
+	  -webkit-transition: all .6s ease-out;  /* Chrome 1-25, Safari 3.2+ */
+     -moz-transition: all .6s ease-out;  /* Firefox 4-15 */
+          transition: all .6s ease-out;
+	border-radius: 10px;
+	background: rgba(0,0,0,0.5);
+}
+
+.options{
+	font-weight: 600;
+}
+

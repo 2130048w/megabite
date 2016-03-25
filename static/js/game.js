@@ -19,31 +19,31 @@ function setUpPage() {
 				var csrftoken = getCookie('csrftoken');
 				var html = ''
 				if (data.tleft) {
-					html += '<div id="overlay"></div><h2>Time until nightfall: '+data.tleft+'</h2>'
+					html += '<div id="overlay"></div><h3>Time until nightfall: '+data.tleft+'</h3>'
 				}
 				if (data.zombies) {
-					html += '<h2>You are being attacked by '+data.zombies+' zombies!</h2></br>'+
+					html += '<h3>You are being attacked by '+data.zombies+' zombies!</h3></br>'+
 							'<img src="/media/images/zom.png" width="190" height="270"></br>'
 				}
 				else if (data.roomData) {
-					html += '<h2>Inside house: '+data.currentHouse+'</h2></br>'
+					html += '<h3>Inside house: '+data.currentHouse+'</h3></br>'
 				}
 				else if (data.streetData) {
-					html += '<h2>'+data.currentStreet+'</h2></br>'
+					html += '<h3>'+data.currentStreet+'</h3></br>'
 				}
 				if (data.state) {
-					html += '<h2>'+data.state+'</h2>'
+					html += '<h3>'+data.state+'</h3>'
 				}
-					html += '<h2>'+data.status+'</h2>'
+					html += '<h3>'+data.status+'</h3>'
 				if (data.newday) {
-					html += '<h2>Night has fallen. Your party grows hungry.</h2>'
+					html += '<h3>Night has fallen. Your party grows hungry.</h3>'
 				}
 				if (data.gameover) {
-						html +='<h2>You died. Game over.</h2>'
+						html +='<h3>You died. Game over.</h3>'
 					}
 				html += '<form action="" method="post">'+
 				'<input type="hidden" id="csrfmiddlewaretoken" name="csrfmiddlewaretoken" value='+csrftoken+'>'+
-				'<h2> Options </h2>'+
+				'<h3 class="options"> OPTIONS </h3>'+
 				'<div>'
 				if (data.newday) {
 					html +='<input type="submit" class="gamebutton ajax-button" name="continue" value="Continue"/>'
@@ -59,7 +59,7 @@ function setUpPage() {
 					html+= '</div>'
 				if (data.streetData) {
 					html += '<div>'+
-							'<h2> Street map </h2>'
+							'<h3> Street map </h3>'
 					for (i in data.streetData) {
 						html+= '<input type="image" src="/media/images/h'+data.streetData[i]+'.png" width="200" height="200" class="ajax-button inline" name='+i+' value='+i+' />'
 					}	
@@ -67,7 +67,7 @@ function setUpPage() {
 				}
 				if (data.roomData) {
 					html += '<div>'+
-							'<h2> House map </h2>'
+							'<h3> House map </h3>'
 					for (i in data.roomData) {
 						html+= '<input type="image" src="/media/images/rooms/r'+data.roomData[i]+'.png" width="200" height="200" class="ajax-button inline" name='+i+' value='+i+' />'
 					}

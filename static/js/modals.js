@@ -192,9 +192,9 @@ function buildModalAbout() {
 		'<div class="modal_body">' +
 		'<h2 class="about">About</h2>' +
 		'<p>Megabite is a game of search and survival</p>' +
-		'<p>Your aim is to survive for as long as possible,</p>' +
-		'<p>during a zombie apocalypse</p>' +
-		'<p>Search for food, ammo and survivors to help you defeat zombies</p>'+
+		'<p>Your aim is to survive for as long as possible during a zombie apocalypse</p>' +
+		'<p>Search through the houses to find, ammo and survivors to help you defeat zombies!</p>'+
+		'<p>GOOD LUCK!</p>'+
 		'</div>';
 		
 

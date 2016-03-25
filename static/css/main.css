@@ -17,7 +17,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-weight: 600; 
+  font-weight: 400; 
   font-family: 'Raleway', sans-serif;
   color:white;
 }
@@ -668,7 +668,7 @@ body > section {
 }
 
 #partner {
-  background: url(/media/images/bg.jpg) 50% 50% no-repeat;
+  background: url(/media/images/bg6.jpg) 50% 50% no-repeat;
   background-size: cover;
 }
 
@@ -679,7 +679,7 @@ body > section {
 
 #partner h2, 
 #partner h3 {
-  color: #fff;
+  color: #fff
 }
 
 .partners ul {
@@ -934,7 +934,8 @@ body > section {
 	height:auto;
 	width:70%;
 	border-radius: 25px;
-	float:right;
+	float:top;
+	float: right;
 }
 
 .profile_picture .modal_button{
@@ -942,9 +943,9 @@ body > section {
   -moz-border-radius: 28;
   border-radius: 28px;
   font-family: Raleway;
-  color: #c52d2f;
+  color: #fff;
   font-size: 15px;
-  background: #f00014;
+  background: #c52d2f;
   padding: 8px 20px 10px 20px;
   text-decoration: none;
   float: right;
