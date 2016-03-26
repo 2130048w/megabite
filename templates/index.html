@@ -5,12 +5,24 @@
 {% block title %}Home{% endblock %}
 
 {% block body_block %}
-	<div id="foo">
-		<ul class="slideme">
-			<li><img src="{{MEDIA_URL}}images/bg.jpg"></li>
-			<li><img src="{{MEDIA_URL}}images/bg1.jpg"></li>
-			<li><img src="{{MEDIA_URL}}images/bg2.jpg"></li>
-			<li><img src="{{MEDIA_URL}}images/bg3.jpg"></li>
-		</ul>
-	</div>
+    <section id="partner" size=90vh>
+        <div class="container">
+			<div class="center">
+				<div class="center wow fadeInDown">  
+	                <h2>A game of search and survival in a zombie apocalypse</h2>
+					<h2>Will you survive?</h2>
+
+	            </div> 
+            <div class="partners">
+                <ul>
+                    <li> <img class="img-responsive wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="300ms" src="{{ MEDIA_URL }}images/h0.png"></li>
+                    <li> <img class="img-responsive wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="600ms" src="{{ MEDIA_URL }}images/h1.png"></li>
+                    <li> <img class="img-responsive wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="900ms" src="{{ MEDIA_URL }}images/h2.png"></li>
+                    <li> <img class="img-responsive wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="1200ms" src="{{ MEDIA_URL }}images/h1.png"></li>
+                    <li> <img class="img-responsive wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="1500ms" src="{{ MEDIA_URL }}images/h0.png"></li>
+                </ul>
+				</div>
+			</div>	
+        </div><!--/.container-->
+    </section><!--/#partner-->
 {% endblock %}
