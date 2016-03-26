@@ -44,3 +44,33 @@ To run, install the packages in the *requirements.txt* and then run:
 Follow the instructions to play the game. 
 
 The interface is crude and text based - but in *main.py* you can see how to instantiate the game object and what methods you need to call. Note the game loop is composed of two parts, checking if game is over, and then checking if the day or game is over.
+
+--------------------
+GitHub Accounts
+
+
+AislingMcMahon : 2221607m : Aisling McMahon
+
+metigue:   2109381e : David Evans
+
+sosaje :  2167936s : Jonathan "Sid" Saje
+
+--------------------
+
+Changes since demo on 23/03/2016
+
+Various aesthetic changes
+Streets and houses no longer re-randomize after an event
+Added password checker for profile editing
+Added errors to login and register
+Added new index page
+
+--------------------
+
+Set up instructions
+
+Run setup.bat
+workon megabite
+
+Alternatively: Manual setup
+just pip install -r requirements.txt and go
