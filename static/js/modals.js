@@ -255,7 +255,7 @@ function buildModalEdit() {
 		'<div class="close_button">&times;</div>' +
 		'</div>' +
 		'<div class="modal_body">' +
-		'<h2 class="title">Registration</h2>' +
+		'<h2 class="title">Edit profile</h2>' +
 		'<div class="input_labl">Username</div>' +
 		'<div class="error" id="username_error"></div>'+
 		'<input type="text" required="required" id="username" class="modal_inpt" placeholder="" name="username" title="Enter your full name">' +
